@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barranquilla Convive - Panel Administrador</title>
+    <link rel="stylesheet" href="/views/view_admin/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <div class="main-container">
+
+        
+        <aside class="sidebar">
+            <div class="logo-space">
+                <p>Logo de Barranquilla Convive (Medidas aprox: 150px x 60px)</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li><a href="/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
+                    <li><a href="#"><i class="fa-solid fa-school"></i> Instituciones</a></li>
+                    <li><a href="#"><i class="fa-solid fa-bell"></i> Alertas</a></li>
+                    <li><a href="#"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
+                    <li><a href="#"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
+                    <li><a href="#"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="top-header">
+                <div class="header-welcome">
+                    <h1>Bienvenido, Administrador</h1>
+                    <p>Resumen general de la plataforma</p>
+                </div>
+                <div class="header-profile">
+                    <i class="fa-regular fa-bell"></i>
+                    <div class="profile-info">
+                        <img src="avatar.png" alt="Avatar Administrador"> <span>Administrador</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+
+                <section class="stats-cards">
+                    <div class="stat-card">
+                        <h2>Estudiantes</h2>
+                        <p class="stat-value">28.560</p>
+                        <p class="stat-change"><i class="fa-solid fa-arrow-up"></i> 12% vs mes anterior</p>
+                    </div>
+                    <div class="stat-card">
+                        <h2>Alertas activas</h2>
+                        <p class="stat-value">320</p>
+                        <p class="stat-change"><i class="fa-solid fa-arrow-up"></i> 8% vs mes anterior</p>
+                    </div>
+                    <div class="stat-card">
+                        <h2>Alertas críticas</h2>
+                        <p class="stat-value">45</p>
+                        <p class="stat-change"><i class="fa-solid fa-arrow-down"></i> 5% vs mes anterior</p>
+                    </div>
+                    <div class="stat-card">
+                        <h2>Instituciones</h2>
+                        <p class="stat-value">120</p>
+                        <p class="stat-change"><i class="fa-solid fa-arrow-up"></i> 3% vs mes anterior</p>
+                    </div>
+                </section>
+
+                <section class="charts-section">
+                    <div class="chart-card">
+                        <h2>Alertas por mes</h2>
+                        <canvas id="lineChart"></canvas> </div>
+                    <div class="chart-card">
+                        <h2>Alertas por nivel</h2>
+                        <canvas id="donutChart"></canvas> </div>
+                </section>
+
+                <section class="alerts-section">
+                    <div class="alert-card">
+                        <h2>Alertas por localidad</h2>
+                        <ul>
+                            <li><span class="location">Riomar</span> <span class="count">120</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 80%"></span></span></li>
+                            <li><span class="location">Norte-Centro Histórico</span> <span class="count">98</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 65%"></span></span></li>
+                            <li><span class="location">Suroriente</span> <span class="count">76</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 50%"></span></span></li>
+                            <li><span class="location">Suroccidente</span> <span class="count">65</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 43%"></span></span></li>
+                            <li><span class="location">Metropolitana</span> <span class="count">40</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 27%"></span></span></li>
+                        </ul>
+                    </div>
+                    <div class="alert-card recent-alerts">
+                        <h2>Alertas recientes</h2>
+                        <ul>
+                            <li>
+                                <span class="case-id">Caso #1256</span>
+                                <span class="institution">IED La Concepción</span>
+                                <span class="priority high">Alto</span>
+                                <span class="time">Hace 15 min</span>
+                            </li>
+                            <li>
+                                <span class="case-id">Caso #1255</span>
+                                <span class="institution">IED Jorge Robledo</span>
+                                <span class="priority medium">Medio</span>
+                                <span class="time">Hace 1 hora</span>
+                            </li>
+                            <li>
+                                <span class="case-id">Caso #1254</span>
+                                <span class="institution">IED San José</span>
+                                <span class="priority high">Alto</span>
+                                <span class="time">Hace 2 horas</span>
+                            </li>
+                        </ul>
+                        <a href="#">Ver todas las alertas</a>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Barranquilla Convive. Todos los derechos reservados.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barranquilla Convive - Gestión de Usuarios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/views/view_admin/css/users.css">
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- Sidebar / Menú Lateral -->
+        <aside class="sidebar">
+            <div class="logo-space">
+                <p>Logo de Barranquilla Convive<br>(Medidas aprox: 150px x 60px)</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li><a href="#" class="active"><i class="fa-solid fa-users"></i> Usuarios</a></li>
+                    <li><a href="#"><i class="fa-solid fa-school"></i> Instituciones</a></li>
+                    <li><a href="#"><i class="fa-solid fa-bell"></i> Alertas</a></li>
+                    <li><a href="#"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
+                    <li><a href="#"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
+                    <li><a href="#"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area / Contenido Principal -->
+        <main class="main-content">
+
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-welcome">
+                    <h1>Gestión de Usuarios</h1>
+                    <p>Panel de administración de perfiles, roles y vinculaciones escolares.</p>
+                </div>
+                <div class="header-profile">
+                    <div class="profile-info">
+                        <div class="avatar-placeholder"></div>
+                        <span>Administrador</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tarjetas de Conteo Rápido Estadístico -->
+            <section class="stats-cards">
+                <div class="stat-card">
+                    <h2>Total Psicólogas</h2>
+                    <p class="stat-value">24</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Total Profesores</h2>
+                    <p class="stat-value">312</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Padres de Familia</h2>
+                    <p class="stat-value">1.450</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Total General</h2>
+                    <p class="stat-value">1.786</p>
+                </div>
+            </section>
+
+            <!-- Tarjeta Principal de Control y Listas -->
+            <section class="management-card">
+                
+                <!-- Barra de herramientas: Buscador y Filtros avanzados -->
+                <div class="toolbar">
+                    <div class="filters">
+                        <div class="search-container">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" class="search-input" placeholder="Buscar por nombre o documento...">
+                        </div>
+                        
+                        <select class="filter-select">
+                            <option value="">Filtrar por Rol</option>
+                            <option value="admin">Rector / Admin</option>
+                            <option value="psico">Psicóloga</option>
+                            <option value="profe">Profesor</option>
+                            <option value="padre">Padre de Familia</option>
+                        </select>
+
+                        <select class="filter-select">
+                            <option value="">Filtrar por Colegio</option>
+                            <option value="ied1">IED La Concepción</option>
+                            <option value="ied2">IED Jorge Robledo</option>
+                            <option value="ied3">IED San José</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-primary"><i class="fa-solid fa-user-plus"></i> Crear Usuario</button>
+                </div>
+
+                <!-- Tabla Responsiva de Usuarios -->
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre y Contacto</th>
+                                <th>Identificación</th>
+                                <th>Rol / Perfil</th>
+                                <th>Institución y Asignación</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Ejemplo de Fila: Psicóloga -->
+                            <tr>
+                                <td>
+                                    <strong>Dra. Elena Mendoza</strong><br>
+                                    <span class="user-email">elena.mendoza@convive.edu.co</span>
+                                </td>
+                                <td>CC 1.045.321.456</td>
+                                <td><span class="badge psico">Psicóloga</span></td>
+                                <td>
+                                    IED La Concepción<br>
+                                    <span class="sub-text">Especialista de Zona</span>
+                                </td>
+                                <td>
+                                    <div class="status-container">
+                                        <span class="status-dot active"></span> Activo
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action reset-pass" title="Restablecer Clave"><i class="fa-solid fa-key"></i></button>
+                                        <button class="btn-action deactivate" title="Desactivar"><i class="fa-solid fa-user-slash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Ejemplo de Fila: Profesor -->
+                            <tr>
+                                <td>
+                                    <strong>Prof. Carlos Torres</strong><br>
+                                    <span class="user-email">carlos.torres@convive.edu.co</span>
+                                </td>
+                                <td>CC 72.345.123</td>
+                                <td><span class="badge profe">Profesor</span></td>
+                                <td>
+                                    IED Jorge Robledo<br>
+                                    <span class="sub-text highlight-profe">Asignado: 3º Grado A</span>
+                                </td>
+                                <td>
+                                    <div class="status-container">
+                                        <span class="status-dot active"></span> Activo
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action reset-pass" title="Restablecer Clave"><i class="fa-solid fa-key"></i></button>
+                                        <button class="btn-action deactivate" title="Desactivar"><i class="fa-solid fa-user-slash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Ejemplo de Fila: Padre de Familia -->
+                            <tr>
+                                <td>
+                                    <strong>María Camila Gómez</strong><br>
+                                    <span class="user-email">camila.gomez@mail.com</span>
+                                </td>
+                                <td>CC 32.765.432</td>
+                                <td><span class="badge padre">Padre de Familia</span></td>
+                                <td>
+                                    IED San José<br>
+                                    <span class="sub-text highlight-padre">Acudiente de: Juan Pérez</span>
+                                </td>
+                                <td>
+                                    <div class="status-container">
+                                        <span class="status-dot active"></span> Activo
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action reset-pass" title="Restablecer Clave"><i class="fa-solid fa-key"></i></button>
+                                        <button class="btn-action deactivate" title="Desactivar"><i class="fa-solid fa-user-slash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Ejemplo de Fila: Rector / Inactivo -->
+                            <tr>
+                                <td>
+                                    <strong>Dr. Ricardo Silva</strong><br>
+                                    <span class="user-email">ricardo.silva@convive.edu.co</span>
+                                </td>
+                                <td>CC 8.543.211</td>
+                                <td><span class="badge admin">Rector / Admin</span></td>
+                                <td>
+                                    IED La Concepción<br>
+                                    <span class="sub-text">Sede Principal</span>
+                                </td>
+                                <td>
+                                    <div class="status-container">
+                                        <span class="status-dot inactive"></span> Inactivo
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action reset-pass" title="Restablecer Clave"><i class="fa-solid fa-key"></i></button>
+                                        <button class="btn-action activate" title="Activar"><i class="fa-solid fa-user-check"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Barranquilla Convive. Todos los derechos reservados. Plataforma Escolar de Alertas y Detección Temprana en Salud Mental.</p>
+    </footer>
+
+</body>
+</html>
