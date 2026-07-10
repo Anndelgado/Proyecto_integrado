@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barranquilla Convive - Gestión de Instituciones</title>
+    <!-- Cargamos FontAwesome por CDN para los íconos de la interfaz -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Vinculación del archivo de estilos externo -->
+    <link rel="stylesheet" href="/src/views/view_admin/css/institutions.css">
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- Sidebar / Menú Lateral (Estandarizado) -->
+        <aside class="sidebar">
+            <div class="logo-space">
+                <p>Logo de Barranquilla Convive<br>Medidas aprox: 150px x 60px</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/src/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
+                    <li><a href="#" class="active"><i class="fa-solid fa-school"></i> Instituciones</a></li>
+                    <li><a href="/src/views/view_admin/alerts.html"><i class="fa-solid fa-bell"></i> Alertas</a></li>
+                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area / Contenido Principal -->
+        <main class="main-content">
+
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-welcome">
+                    <h1>Gestión de Instituciones</h1>
+                    <p>Monitoreo de sedes educativas, asignaciones de personal y semáforo de riesgo.</p>
+                </div>
+                <div class="header-profile">
+                    <div class="profile-info">
+                        <div class="avatar-placeholder"></div>
+                        <span>Administrador</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tarjetas de Conteo Rápido Estadístico -->
+            <section class="stats-cards">
+                <div class="stat-card">
+                    <h2>Instituciones</h2>
+                    <p class="stat-value">58</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Sedes Críticas</h2>
+                    <p class="stat-value text-danger">4</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Zona Mayor Riesgo</h2>
+                    <p class="stat-value text-alert">Suroccidente</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Docentes Vinculados</h2>
+                    <p class="stat-value">1.124</p>
+                </div>
+            </section>
+
+            <!-- Tarjeta Principal de Control y Listas -->
+            <section class="management-card">
+                
+                <!-- Barra de herramientas: Buscador y Filtros avanzados -->
+                <div class="toolbar">
+                    <div class="filters">
+                        <div class="search-container">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" class="search-input" placeholder="Buscar por nombre o código DANE...">
+                        </div>
+                        
+                        <select class="filter-select">
+                            <option value="">Filtrar por Localidad</option>
+                            <option value="suroccidente">Suroccidente</option>
+                            <option value="suroriente">Suroriente</option>
+                            <option value="metropolitana">Metropolitana</option>
+                            <option value="riomar">Riomar</option>
+                            <option value="norte">Norte-Centro Histórico</option>
+                        </select>
+
+                        <select class="filter-select">
+                            <option value="">Estado de Riesgo</option>
+                            <option value="critico">Riesgo Crítico</option>
+                            <option value="moderado">Riesgo Moderado</option>
+                            <option value="estable">Estable</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-primary"><i class="fa-solid fa-plus"></i> Registrar Institución</button>
+                </div>
+
+                <!-- Tabla Responsiva de Instituciones -->
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Institución Educativa (IED)</th>
+                                <th>Localidad</th>
+                                <th>Personal Responsable</th>
+                                <th>Personal Docente</th>
+                                <th>Semáforo de Alertas</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Ejemplo de Fila 1: Riesgo Crítico -->
+                            <tr>
+                                <td>
+                                    <strong>IED La Concepción</strong><br>
+                                    <span class="sub-text">DANE: 108001002341</span><br>
+                                    <span class="sub-text text-light">Cl. 75 # 65-10</span>
+                                </td>
+                                <td>Riomar</td>
+                                <td>
+                                    <span class="manager-title">Rector:</span> Dr. Ricardo Silva<br>
+                                    <span class="manager-title">Psicóloga:</span> Dra. Elena Mendoza
+                                </td>
+                                <td>
+                                    <strong>42</strong> <span class="sub-text text-light">Profesores</span>
+                                </td>
+                                <td>
+                                    <div class="alert-semaphore">
+                                        <span class="badge-alert alert-critica" title="Alertas Críticas">5 Críticas</span>
+                                        <span class="badge-alert alert-media" title="Alertas Medias">12 Medias</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action" title="Editar Institución"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action rapid-assign" title="Asignar Psicóloga"><i class="fa-solid fa-user-gear"></i></button>
+                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i class="fa-solid fa-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Ejemplo de Fila 2: Riesgo Moderado -->
+                            <tr>
+                                <td>
+                                    <strong>IED Jorge Robledo</strong><br>
+                                    <span class="sub-text">DANE: 108001005982</span><br>
+                                    <span class="sub-text text-light">Cra. 21B # 68C-45</span>
+                                </td>
+                                <td>Suroccidente</td>
+                                <td>
+                                    <span class="manager-title">Rector:</span> Lic. Martha Gómez<br>
+                                    <span class="manager-title">Psicóloga:</span> Dra. Ana Milena Rey
+                                </td>
+                                <td>
+                                    <strong>56</strong> <span class="sub-text text-light">Profesores</span>
+                                </td>
+                                <td>
+                                    <div class="alert-semaphore">
+                                        <span class="badge-alert alert-critica-zero" title="Alertas Críticas">0 Críticas</span>
+                                        <span class="badge-alert alert-media" title="Alertas Medias">4 Medias</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action" title="Editar Institución"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action rapid-assign" title="Asignar Psicóloga"><i class="fa-solid fa-user-gear"></i></button>
+                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i class="fa-solid fa-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Ejemplo de Fila 3: Estable -->
+                            <tr>
+                                <td>
+                                    <strong>IED San José</strong><br>
+                                    <span class="sub-text">DANE: 108001001122</span><br>
+                                    <span class="sub-text text-light">Cl. 38 # 22-05</span>
+                                </td>
+                                <td>Suroriente</td>
+                                <td>
+                                    <span class="manager-title">Rector:</span> Ing. Marcos Pineda<br>
+                                    <span class="manager-title">Psicóloga:</span> <span class="text-unassigned"><i class="fa-solid fa-triangle-exclamation"></i> Sin Asignar</span>
+                                </td>
+                                <td>
+                                    <strong>31</strong> <span class="sub-text text-light">Profesores</span>
+                                </td>
+                                <td>
+                                    <div class="alert-semaphore">
+                                        <span class="badge-alert alert-estable" title="Sin alertas pendientes">Estable</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action" title="Editar Institución"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action rapid-assign highlight-alert" title="Asignar Psicóloga Obligatorio"><i class="fa-solid fa-user-gear"></i></button>
+                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i class="fa-solid fa-eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Barranquilla Convive. Todos los derechos reservados. Plataforma Escolar de Alertas y Detección Temprana en Salud Mental.</p>
+    </footer>
+
+</body>
+</html>

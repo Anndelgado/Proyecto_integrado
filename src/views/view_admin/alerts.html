@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barranquilla Convive - Gestión de Alertas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/src/views/view_admin/css/alerts.css">
+</head>
+<body>
+
+    <div class="main-container">
+
+        <aside class="sidebar">
+            <div class="logo-space">
+                <p>Logo de Barranquilla Convive<br>Medidas aprox: 150px x 60px</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/src/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
+                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i> Instituciones</a></li>
+                    <li><a href="#" class="active"><i class="fa-solid fa-bell"></i> Alertas</a></li>
+                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="top-header">
+                <div class="header-welcome">
+                    <h1>Gestión de Alertas</h1>
+                    <p>Monitoreo en tiempo real y atención oportuna a incidencias de convivencia y salud mental.</p>
+                </div>
+                <div class="header-profile">
+                    <div class="profile-info">
+                        <div class="avatar-placeholder"></div>
+                        <span>Administrador</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <section class="stats-cards">
+                <div class="stat-card">
+                    <h2>Alertas Totales</h2>
+                    <p class="stat-value">320</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Alertas Críticas</h2>
+                    <p class="stat-value text-danger">45</p>
+                </div>
+                <div class="stat-card">
+                    <h2>En Revisión</h2>
+                    <p class="stat-value text-process">85</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Casos Resueltos</h2>
+                    <p class="stat-value text-success">190</p>
+                </div>
+            </section>
+
+            <section class="management-card">
+                
+                <div class="toolbar">
+                    <div class="filters">
+                        <div class="search-container">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" class="search-input" placeholder="Buscar por radicado, IED o estudiante...">
+                        </div>
+                        
+                        <select class="filter-select">
+                            <option value="">Nivel de Riesgo</option>
+                            <option value="alto">Alto / Crítico</option>
+                            <option value="medio">Medio</option>
+                            <option value="bajo">Bajo</option>
+                        </select>
+
+                        <select class="filter-select">
+                            <option value="">Tipo de Alerta</option>
+                            <option value="acoso">Acoso Escolar (Bullying)</option>
+                            <option value="psico">Riesgo Psicosocial</option>
+                            <option value="academico">Deserción Académica</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-primary"><i class="fa-solid fa-bell-slash"></i> Historial Completo</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código / Radicado</th>
+                                <th>Institución Educativa</th>
+                                <th>Tipo de Alerta</th>
+                                <th>Nivel de Riesgo</th>
+                                <th>Fecha Reporte</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>#1256</strong></td>
+                                <td>
+                                    <strong>IED La Concepción</strong><br>
+                                    <span class="sub-text">Sede Principal - Riomar</span>
+                                </td>
+                                <td>Riesgo Psicosocial / Ansiedad</td>
+                                <td><span class="badge risk-high">Alto / Crítico</span></td>
+                                <td>Hace 15 min</td>
+                                <td>
+                                    <span class="badge-status status-pending">Pendiente</span>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action view-case" title="Atender / Ver Detalle"><i class="fa-solid fa-folder-open"></i></button>
+                                        <button class="btn-action" title="Derivar a Psicóloga"><i class="fa-solid fa-share-nodes"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>#1255</strong></td>
+                                <td>
+                                    <strong>IED Jorge Robledo</strong><br>
+                                    <span class="sub-text">Suroccidente</span>
+                                </td>
+                                <td>Acoso Escolar (Bullying)</td>
+                                <td><span class="badge risk-medium">Medio</span></td>
+                                <td>Hace 1 hora</td>
+                                <td>
+                                    <span class="badge-status status-process">En Proceso</span>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action view-case" title="Atender / Ver Detalle"><i class="fa-solid fa-folder-open"></i></button>
+                                        <button class="btn-action" title="Derivar a Psicóloga"><i class="fa-solid fa-share-nodes"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>#1254</strong></td>
+                                <td>
+                                    <strong>IED San José</strong><br>
+                                    <span class="sub-text">Suroriente</span>
+                                </td>
+                                <td>Deserción / Ausentismo</td>
+                                <td><span class="badge risk-low">Bajo</span></td>
+                                <td>Hace 3 horas</td>
+                                <td>
+                                    <span class="badge-status status-resolved">Resuelto</span>
+                                </td>
+                                <td>
+                                    <div class="actions-btn-group">
+                                        <button class="btn-action view-case" title="Atender / Ver Detalle"><i class="fa-solid fa-folder-open"></i></button>
+                                        <button class="btn-action" title="Derivar a Psicóloga"><i class="fa-solid fa-share-nodes"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Barranquilla Convive. Todos los derechos reservados. Plataforma Escolar de Alertas y Detección Temprana en Salud Mental.</p>
+    </footer>
+
+</body>
+</html>

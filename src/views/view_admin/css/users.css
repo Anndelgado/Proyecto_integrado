@@ -47,33 +47,76 @@ body {
     color: #999;
 }
 
+/* ===================================================
+   SIDEBAR ESTANDARIZADA (USAR EN TODAS LAS VISTAS)
+   =================================================== */
+.sidebar {
+    width: 260px; /* Ancho fijo estricto para que nunca varíe el espacio */
+    min-width: 260px;
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    padding: 24px 16px; /* Espaciado interno unificado */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-space {
+    height: 60px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #999;
+    font-size: 11px;
+    border: 1px dashed #ccc; /* Espacio para el logo institucional */
+}
+
 .sidebar nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
+.sidebar nav ul li {
+    margin-bottom: 8px; /* Separación vertical uniforme entre botones */
+}
+
 .sidebar nav ul li a {
     display: flex;
     align-items: center;
-    padding: 12px 15px;
+    padding: 12px 16px; /* Padding exacto para la forma de cápsula redondeada */
     text-decoration: none;
-    color: var(--secondary-color);
-    border-radius: 8px;
-    margin-bottom: 10px;
-    transition: all 0.3s ease;
+    color: #5c626e; /* Color gris de los textos inactivos */
+    font-size: 15px;
+    font-weight: normal; /* Letra normal en todos los botones por igual */
+    border-radius: 10px; /* Bordes perfectamente redondeados como el de Inicio */
+    transition: all 0.2s ease-in-out;
 }
 
-.sidebar nav ul li a:hover,
-.sidebar nav ul li a.active {
-    background-color: var(--primary-color);
-    color: white;
-}
-
+/* Alineación milimétrica de íconos */
 .sidebar nav ul li a i {
-    margin-right: 12px;
+    font-size: 16px;
+    margin-right: 14px; /* Distancia fija para que ningún texto se ruede */
     width: 20px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estado hover (pasar el mouse por encima) */
+.sidebar nav ul li a:hover {
+    background-color: #f8fafc;
+    color: #333;
+}
+
+/* Estado activo unificado (El botón naranja de la vista actual) */
+.sidebar nav ul li a.active {
+    background-color: #f79c1d; /* El naranja exacto de Barranquilla Convive */
+    color: #ffffff !important; /* Texto totalmente blanco */
+    font-weight: normal; /* Se mantiene normal para evitar que se ruede o ensanche */
 }
 
 /* Contenido Principal */
