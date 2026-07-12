@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barranquilla Convive - Estadísticas y Paneles</title>
+    <!-- FontAwesome para los íconos de la interfaz -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Hoja de estilos externa -->
+    <link rel="stylesheet" href="/src/views/view_admin/css/statistics.css">
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- Sidebar / Menú Lateral (Estandarizado) -->
+        <aside class="sidebar">
+            <div class="logo-space">
+                <p>Logo de Barranquilla Convive<br>Medidas aprox: 150px x 60px</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/src/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
+                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i> Instituciones</a></li>
+                    <li><a href="/src/views/view_admin/alerts.html"><i class="fa-solid fa-bell"></i> Alertas</a></li>
+                    <li><a href="#" class="active"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+
+            <!-- Encabezado con Filtros Globales -->
+            <header class="top-header">
+                <div class="header-welcome">
+                    <h1>Módulo de Estadísticas</h1>
+                    <p>Análisis consolidado de convivencia escolar y salud mental en el distrito.</p>
+                </div>
+                
+                <!-- Filtros del Dashboard -->
+                <div class="dashboard-filters">
+                    <select class="filter-select">
+                        <option value="">Filtrar por Periodo</option>
+                        <option value="mes">Este Mes</option>
+                        <option value="trimestre" selected>Último Trimestre</option>
+                        <option value="anio">Año 2026</option>
+                    </select>
+
+                    <select class="filter-select">
+                        <option value="">Todas las Localidades</option>
+                        <option value="riomar">Riomar</option>
+                        <option value="suroccidente">Suroccidente</option>
+                        <option value="suroriente">Suroriente</option>
+                        <option value="metropolitana">Metropolitana</option>
+                    </select>
+                    
+                    <button class="btn-refresh"><i class="fa-solid fa-arrows-rotate"></i> Actualizar</button>
+                </div>
+            </header>
+
+            <!-- Tarjetas de Impacto de Gestión (KPIs) -->
+            <section class="stats-cards">
+                <div class="stat-card">
+                    <h2>Eficacia de Resolución</h2>
+                    <p class="stat-value text-success">84.2%</p>
+                    <span class="stat-trend"><i class="fa-solid fa-arrow-up"></i> +3.1% vs mes anterior</span>
+                </div>
+                <div class="stat-card">
+                    <h2>Estudiantes Atendidos</h2>
+                    <p class="stat-value">1,420</p>
+                    <span class="stat-trend text-neutral">Casos individuales analizados</span>
+                </div>
+                <div class="stat-card">
+                    <h2>Tiempo de Respuesta</h2>
+                    <p class="stat-value text-warning">4.2 hrs</p>
+                    <span class="stat-trend"><i class="fa-solid fa-arrow-down"></i> -1.5 hrs de optimización</span>
+                </div>
+            </section>
+
+            <!-- Sección de Gráficos Principales (Grid de 2 Columnas) -->
+            <section class="charts-grid">
+                
+                <!-- Gráfico 1: Tendencia Temporal -->
+                <div class="chart-container-card">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-chart-area"></i> Tendencia Mensual de Reportes</h3>
+                        <span class="sub-text">Histórico acumulado de incidencias</span>
+                    </div>
+                    <div class="chart-placeholder">
+                        <!-- Aquí se renderiza el canvas de Chart.js -->
+                        <div class="simulated-chart-line"></div>
+                        <p class="placeholder-text">[ Espacio reservado para Gráfico de Líneas / Tendencia ]</p>
+                    </div>
+                </div>
+
+                <!-- Gráfico 2: Tipologías comunes -->
+                <div class="chart-container-card">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-chart-pie"></i> Tipologías de Alertas Frecuentes</h3>
+                        <span class="sub-text">Distribución porcentual por categorías</span>
+                    </div>
+                    <div class="chart-placeholder">
+                        <!-- Espacio reservado para gráfico circular o barras -->
+                        <div class="simulated-chart-pie"></div>
+                        <p class="placeholder-text">[ Espacio reservado para Gráfico de Dona / Barra de Motivos ]</p>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Fila Inferior: Top de IEDs Críticas -->
+            <section class="management-card table-section">
+                <div class="table-header">
+                    <div>
+                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Focos de Atención Prioritaria (Top IEDs)</h3>
+                        <p class="sub-text">Colegios con mayor volumen de alertas activas en el periodo seleccionado.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Institución Educativa</th>
+                                <th>Localidad</th>
+                                <th>Alertas Totales</th>
+                                <th>Casos Críticos</th>
+                                <th>Índice de Riesgo</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>IED La Concepción</strong></td>
+                                <td>Riomar</td>
+                                <td>38</td>
+                                <td><span class="indicator text-danger">12 Críticos</span></td>
+                                <td><div class="progress-bar-container"><div class="progress bg-danger" style="width: 85%;"></div></div></td>
+                                <td><button class="btn-table-action">Inspeccionar</button></td>
+                            </tr>
+                            <tr>
+                                <td><strong>IED Jorge Robledo</strong></td>
+                                <td>Suroccidente</td>
+                                <td>29</td>
+                                <td><span class="indicator text-warning">5 Críticos</span></td>
+                                <td><div class="progress-bar-container"><div class="progress bg-warning" style="width: 60%;"></div></div></td>
+                                <td><button class="btn-table-action">Inspeccionar</button></td>
+                            </tr>
+                            <tr>
+                                <td><strong>IED San José</strong></td>
+                                <td>Suroriente</td>
+                                <td>22</td>
+                                <td><span class="indicator text-success">2 Críticos</span></td>
+                                <td><div class="progress-bar-container"><div class="progress bg-success" style="width: 35%;"></div></div></td>
+                                <td><button class="btn-table-action">Inspeccionar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Barranquilla Convive. Módulo de Inteligencia de Datos y Análisis Predictivo Institucional.</p>
+    </footer>
+
+</body>
+</html>

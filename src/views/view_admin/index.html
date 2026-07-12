@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barranquilla Convive - Panel Administrador</title>
     <link rel="stylesheet" href="/src/views/view_admin/css/admin.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
 
     <div class="main-container">
@@ -20,11 +24,15 @@
                 <ul>
                     <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Inicio</a></li>
                     <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
-                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i> Instituciones</a></li>
+                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i>
+                            Instituciones</a></li>
                     <li><a href="/src/views/view_admin/alerts.html"><i class="fa-solid fa-bell"></i> Alertas</a></li>
-                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
-                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
-                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i>
+                            Estadísticas</a></li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i>
+                            Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a>
+                    </li>
                 </ul>
             </nav>
         </aside>
@@ -73,21 +81,33 @@
                 <section class="charts-section">
                     <div class="chart-card">
                         <h2>Alertas por mes</h2>
-                        <canvas id="lineChart"></canvas> </div>
+                        <canvas id="lineChart"></canvas>
+                    </div>
                     <div class="chart-card">
                         <h2>Alertas por nivel</h2>
-                        <canvas id="donutChart"></canvas> </div>
+                        <canvas id="donutChart"></canvas>
+                    </div>
                 </section>
 
                 <section class="alerts-section">
                     <div class="alert-card">
                         <h2>Alertas por localidad</h2>
                         <ul>
-                            <li><span class="location">Riomar</span> <span class="count">120</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 80%"></span></span></li>
-                            <li><span class="location">Norte-Centro Histórico</span> <span class="count">98</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 65%"></span></span></li>
-                            <li><span class="location">Suroriente</span> <span class="count">76</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 50%"></span></span></li>
-                            <li><span class="location">Suroccidente</span> <span class="count">65</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 43%"></span></span></li>
-                            <li><span class="location">Metropolitana</span> <span class="count">40</span> <span class="progress-bar-container"><span class="progress-bar" style="width: 27%"></span></span></li>
+                            <li><span class="location">Riomar</span> <span class="count">120</span> <span
+                                    class="progress-bar-container"><span class="progress-bar"
+                                        style="width: 80%"></span></span></li>
+                            <li><span class="location">Norte-Centro Histórico</span> <span class="count">98</span> <span
+                                    class="progress-bar-container"><span class="progress-bar"
+                                        style="width: 65%"></span></span></li>
+                            <li><span class="location">Suroriente</span> <span class="count">76</span> <span
+                                    class="progress-bar-container"><span class="progress-bar"
+                                        style="width: 50%"></span></span></li>
+                            <li><span class="location">Suroccidente</span> <span class="count">65</span> <span
+                                    class="progress-bar-container"><span class="progress-bar"
+                                        style="width: 43%"></span></span></li>
+                            <li><span class="location">Metropolitana</span> <span class="count">40</span> <span
+                                    class="progress-bar-container"><span class="progress-bar"
+                                        style="width: 27%"></span></span></li>
                         </ul>
                     </div>
                     <div class="alert-card recent-alerts">
@@ -112,7 +132,7 @@
                                 <span class="time">Hace 2 horas</span>
                             </li>
                         </ul>
-                        <a href="#">Ver todas las alertas</a>
+                        <a href="/src/views/view_admin/alerts.html">Ver todas las alertas</a>
                     </div>
                 </section>
 
@@ -126,5 +146,9 @@
 
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/src/views/view_admin/index.js"></script>
+
 </body>
+
 </html>
