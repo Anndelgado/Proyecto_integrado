@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barranquilla Convive - Gestión de Instituciones</title>
     <!-- Cargamos FontAwesome por CDN para los íconos de la interfaz -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Vinculación del archivo de estilos externo -->
     <link rel="stylesheet" href="/src/views/view_admin/css/institutions.css">
 </head>
+
 <body>
 
     <div class="main-container">
@@ -24,9 +28,12 @@
                     <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
                     <li><a href="#" class="active"><i class="fa-solid fa-school"></i> Instituciones</a></li>
                     <li><a href="/src/views/view_admin/alerts.html"><i class="fa-solid fa-bell"></i> Alertas</a></li>
-                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
-                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
-                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i>
+                            Estadísticas</a></li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i>
+                            Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a>
+                    </li>
                 </ul>
             </nav>
         </aside>
@@ -71,7 +78,7 @@
 
             <!-- Tarjeta Principal de Control y Listas -->
             <section class="management-card">
-                
+
                 <!-- Barra de herramientas: Buscador y Filtros avanzados -->
                 <div class="toolbar">
                     <div class="filters">
@@ -79,7 +86,7 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <input type="text" class="search-input" placeholder="Buscar por nombre o código DANE...">
                         </div>
-                        
+
                         <select class="filter-select">
                             <option value="">Filtrar por Localidad</option>
                             <option value="suroccidente">Suroccidente</option>
@@ -96,7 +103,7 @@
                             <option value="estable">Estable</option>
                         </select>
                     </div>
-                    
+
                     <button class="btn-primary"><i class="fa-solid fa-plus"></i> Registrar Institución</button>
                 </div>
 
@@ -131,19 +138,23 @@
                                 </td>
                                 <td>
                                     <div class="alert-semaphore">
-                                        <span class="badge-alert alert-critica" title="Alertas Críticas">5 Críticas</span>
+                                        <span class="badge-alert alert-critica" title="Alertas Críticas">5
+                                            Críticas</span>
                                         <span class="badge-alert alert-media" title="Alertas Medias">12 Medias</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="actions-btn-group">
-                                        <button class="btn-action" title="Editar Institución"><i class="fa-solid fa-pen"></i></button>
-                                        <button class="btn-action rapid-assign" title="Asignar Psicóloga"><i class="fa-solid fa-user-gear"></i></button>
-                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i class="fa-solid fa-eye"></i></button>
+                                        <button class="btn-action" title="Editar Institución"><i
+                                                class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action rapid-assign" title="Asignar Psicóloga"><i
+                                                class="fa-solid fa-user-gear"></i></button>
+                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i
+                                                class="fa-solid fa-eye"></i></button>
                                     </div>
                                 </td>
                             </tr>
-                            
+
                             <!-- Ejemplo de Fila 2: Riesgo Moderado -->
                             <tr>
                                 <td>
@@ -161,15 +172,19 @@
                                 </td>
                                 <td>
                                     <div class="alert-semaphore">
-                                        <span class="badge-alert alert-critica-zero" title="Alertas Críticas">0 Críticas</span>
+                                        <span class="badge-alert alert-critica-zero" title="Alertas Críticas">0
+                                            Críticas</span>
                                         <span class="badge-alert alert-media" title="Alertas Medias">4 Medias</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="actions-btn-group">
-                                        <button class="btn-action" title="Editar Institución"><i class="fa-solid fa-pen"></i></button>
-                                        <button class="btn-action rapid-assign" title="Asignar Psicóloga"><i class="fa-solid fa-user-gear"></i></button>
-                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i class="fa-solid fa-eye"></i></button>
+                                        <button class="btn-action" title="Editar Institución"><i
+                                                class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action rapid-assign" title="Asignar Psicóloga"><i
+                                                class="fa-solid fa-user-gear"></i></button>
+                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i
+                                                class="fa-solid fa-eye"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -184,21 +199,27 @@
                                 <td>Suroriente</td>
                                 <td>
                                     <span class="manager-title">Rector:</span> Ing. Marcos Pineda<br>
-                                    <span class="manager-title">Psicóloga:</span> <span class="text-unassigned"><i class="fa-solid fa-triangle-exclamation"></i> Sin Asignar</span>
+                                    <span class="manager-title">Psicóloga:</span> <span class="text-unassigned"><i
+                                            class="fa-solid fa-triangle-exclamation"></i> Sin Asignar</span>
                                 </td>
                                 <td>
                                     <strong>31</strong> <span class="sub-text text-light">Profesores</span>
                                 </td>
                                 <td>
                                     <div class="alert-semaphore">
-                                        <span class="badge-alert alert-estable" title="Sin alertas pendientes">Estable</span>
+                                        <span class="badge-alert alert-estable"
+                                            title="Sin alertas pendientes">Estable</span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="actions-btn-group">
-                                        <button class="btn-action" title="Editar Institución"><i class="fa-solid fa-pen"></i></button>
-                                        <button class="btn-action rapid-assign highlight-alert" title="Asignar Psicóloga Obligatorio"><i class="fa-solid fa-user-gear"></i></button>
-                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i class="fa-solid fa-eye"></i></button>
+                                        <button class="btn-action" title="Editar Institución"><i
+                                                class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-action rapid-assign highlight-alert"
+                                            title="Asignar Psicóloga Obligatorio"><i
+                                                class="fa-solid fa-user-gear"></i></button>
+                                        <button class="btn-action view-details" title="Ver Ficha Detallada"><i
+                                                class="fa-solid fa-eye"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -212,8 +233,10 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2026 Barranquilla Convive. Todos los derechos reservados. Plataforma Escolar de Alertas y Detección Temprana en Salud Mental.</p>
+        <p>&copy; 2026 Barranquilla Convive. Todos los derechos reservados. Plataforma Escolar de Alertas y Detección
+            Temprana en Salud Mental.</p>
     </footer>
-
+    <script src="/src/views/view_admin/institutions.js"></script>
 </body>
+
 </html>

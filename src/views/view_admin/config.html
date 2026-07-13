@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barranquilla Convive - Configuración del Sistema</title>
+    <!-- FontAwesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="guard.js"></script>
+    <link rel="stylesheet" href="/src/views/view_admin/css/config.css">
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- Sidebar / Menú Lateral Estandarizado -->
+        <aside class="sidebar">
+            <div class="logo-space">
+                <p>Logo de Barranquilla Convive<br>Medidas aprox: 150px x 60px</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/src/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
+                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i>
+                            Instituciones</a></li>
+                    <li><a href="/src/views/view_admin/alerts.html"><i class="fa-solid fa-bell"></i> Alertas</a></li>
+                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i>
+                            Estadísticas</a></li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i>
+                            Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html" class="active"><i class="fa-solid fa-gear"></i>
+                            Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+
+            <header class="top-header">
+                <div class="header-welcome">
+                    <h1>Configuración General del Sistema</h1>
+                    <p>Ajusta las reglas del motor de alertas, políticas de seguridad y datos de contacto de la entidad.
+                    </p>
+                </div>
+            </header>
+
+            <!-- Layout de Configuración (Sub-menú e Información) -->
+            <div class="config-wrapper">
+
+                <!-- Pestañas de Navegación Interna (Agregamos onclick para el cambio visual) -->
+                <nav class="config-tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'tab-alertas')"><i
+                            class="fa-solid fa-sliders"></i> Reglas de Alertas</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-seguridad')"><i
+                            class="fa-solid fa-shield-halved"></i> Seguridad y Accesos</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-entidad')"><i
+                            class="fa-solid fa-building-shield"></i> Datos de la Entidad</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-roles')"><i
+                            class="fa-solid fa-users-gear"></i> Roles y Permisos</button>
+                </nav>
+
+                <!-- Panel de Contenido Dinámico -->
+                <section class="management-card config-panel">
+
+                    <!-- ===================================================
+                         SUB-VISTA 1: REGLAS DE ALERTAS (ACTIVA POR DEFECTO)
+                         =================================================== -->
+                    <div id="tab-alertas" class="tab-content active">
+                        <div class="config-section-title">
+                            <h3>⚙️ Parámetros y Umbrales de Alertas</h3>
+                            <p>Define los tiempos críticos en los que el algoritmo cambiará el estado de los casos
+                                desatendidos.</p>
+                        </div>
+                        <div class="form-row-2col">
+                            <div class="form-group">
+                                <label>Tiempo límite para atención inicial (Horas)</label>
+                                <span class="help-text">Plazo máximo para que un psicólogo asigne o valide una alerta
+                                    nueva.</span>
+                                <input type="number" class="form-control" value="24">
+                            </div>
+                            <div class="form-group">
+                                <label>Umbral de escalado automático a "Crítico" (Horas)</label>
+                                <span class="help-text">Tiempo sin acciones antes de notificar a la Secretaría
+                                    Distrital.</span>
+                                <input type="number" class="form-control" value="48">
+                            </div>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="notify-email" checked>
+                            <label for="notify-email">Enviar alertas críticas por correo electrónico en tiempo real a
+                                los coordinadores de zona.</label>
+                        </div>
+                    </div>
+
+                    <!-- ===================================================
+                         SUB-VISTA 2: SEGURIDAD Y ACCESOS
+                         =================================================== -->
+                    <div id="tab-seguridad" class="tab-content">
+                        <div class="config-section-title">
+                            <h3>🔒 Políticas de Acceso y Contraseñas</h3>
+                            <p>Refuerza los mecanismos de protección de la información sensible de los estudiantes.</p>
+                        </div>
+                        <div class="form-row-2col">
+                            <div class="form-group">
+                                <label>Expiración periódica de contraseñas</label>
+                                <select class="form-control">
+                                    <option value="90">Cada 90 días</option>
+                                    <option value="180">Cada 180 días</option>
+                                    <option value="0">Nunca expira</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Cierre automático de sesión por inactividad</label>
+                                <select class="form-control">
+                                    <option value="15">15 minutos</option>
+                                    <option value="30" selected>30 minutos</option>
+                                    <option value="60">1 hora</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="mfa-auth">
+                            <label for="mfa-auth">Forzar autenticación de dos factores (2FA) para cuentas con rol
+                                Administrador.</label>
+                        </div>
+                    </div>
+
+                    <!-- ===================================================
+                         SUB-VISTA 3: DATOS DE LA ENTIDAD
+                         =================================================== -->
+                    <div id="tab-entidad" class="tab-content">
+                        <div class="config-section-title">
+                            <h3>🏢 Datos de Contacto de la Entidad Distrital</h3>
+                            <p>Esta información se usará para el pie de página de los correos automáticos y reportes
+                                formales.</p>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>Nombre Oficial de la Institución Gubernamental</label>
+                            <input type="text" class="form-control"
+                                value="Alcaldía de Barranquilla - Secretaría Distrital de Educación">
+                        </div>
+                        <div class="form-row-2col">
+                            <div class="form-group">
+                                <label>Correo de Soporte Técnico</label>
+                                <input type="email" class="form-control" value="soporte.convive@barranquilla.gov.co">
+                            </div>
+                            <div class="form-group">
+                                <label>Línea de Atención de Emergencias Escolares</label>
+                                <input type="text" class="form-control" value="(605) 339-1000 ext. 452">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===================================================
+                         SUB-VISTA 4: ROLES Y PERMISOS
+                         =================================================== -->
+                    <div id="tab-roles" class="tab-content">
+                        <div class="config-section-title">
+                            <h3>👥 Matriz de Roles y Permisos del Sistema</h3>
+                            <p>Verifica el alcance de acciones que puede realizar cada tipo de cuenta en la plataforma.
+                            </p>
+                        </div>
+                        <div class="table-responsive" style="margin-top: 15px;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left;">
+                                <thead style="background-color: #f8fafc;">
+                                    <tr>
+                                        <th style="padding: 10px; border-bottom: 2px solid #e2e8f0;">Rol</th>
+                                        <th style="padding: 10px; border-bottom: 2px solid #e2e8f0;">Crear Alertas</th>
+                                        <th style="padding: 10px; border-bottom: 2px solid #e2e8f0;">Asignar Psicólogos
+                                        </th>
+                                        <th style="padding: 10px; border-bottom: 2px solid #e2e8f0;">Descargar Reportes
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 12px 10px; border-bottom: 1px solid #e2e8f0;"><strong>Super
+                                                Admin</strong></td>
+                                        <td style="color: #2ecc71;"><i class="fa-solid fa-circle-check"></i> Sí</td>
+                                        <td style="color: #2ecc71;"><i class="fa-solid fa-circle-check"></i> Sí</td>
+                                        <td style="color: #2ecc71;"><i class="fa-solid fa-circle-check"></i> Sí</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 10px; border-bottom: 1px solid #e2e8f0;">
+                                            <strong>Psicólogo Orientador</strong></td>
+                                        <td style="color: #2ecc71;"><i class="fa-solid fa-circle-check"></i> Sí</td>
+                                        <td style="color: #e74c3c;"><i class="fa-solid fa-circle-xmark"></i> No</td>
+                                        <td style="color: #e67e22;"><i class="fa-solid fa-circle-minus"></i> Solo
+                                            Propios</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción comunes a los formularios -->
+                    <div class="form-actions-bar">
+                        <button type="button" class="btn-action btn-restore">
+                            <i class="fa-solid fa-rotate-left"></i> Restaurar Valores
+                        </button>
+                        <button type="button" class="btn-action btn-save">
+                            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+                        </button>
+                    </div>
+
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Barranquilla Convive. Consola de Configuración de Políticas de Red y Gobernanza Distrital.</p>
+    </footer>
+    
+    <script src="/src/views/view_admin/config.js"></script>
+</body>
+
+</html>
