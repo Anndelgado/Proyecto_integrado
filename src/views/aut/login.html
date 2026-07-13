@@ -20,31 +20,25 @@
             <span>Login</span>
         </div>
 
-        <h1>Bienvenido de nuevo</h1>
+        <h1>Bienvenido</h1>
 
         <p class="subtitle">
             Ingresa con tu cuenta institucional
         </p>
 
-        <form>
+        <form id="login-form" onsubmit="return false;">
 
-            <label>Correo institucional</label>
+            <label for="email">Correo institucional</label>
+            <input type="email" id="email" placeholder="nombre@iedbarranquilla.edu.co" required>
 
-            <input
-                type="email"
-                placeholder="nombre@iedbarranquilla.edu.co">
-
-            <label>Contraseña</label>
-
-            <input
-                type="password"
-                placeholder="••••••••">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" placeholder="••••••••" required>
 
             <a href="forgot-password.html">
                 ¿Olvidaste tu contraseña?
             </a>
 
-            <button>
+            <button type="submit" id="btn-submit">
                 Ingresar
             </button>
 
@@ -57,6 +51,7 @@
 
     </div>
 
+    <script src="/src/views/auth/login.js"></script>
 </body>
 
 </html>
