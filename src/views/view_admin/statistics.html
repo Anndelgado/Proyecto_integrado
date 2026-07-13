@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barranquilla Convive - Estadísticas y Paneles</title>
     <!-- FontAwesome para los íconos de la interfaz -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Hoja de estilos externa -->
     <link rel="stylesheet" href="/src/views/view_admin/css/statistics.css">
 </head>
+
 <body>
 
     <div class="main-container">
@@ -22,11 +26,14 @@
                 <ul>
                     <li><a href="/src/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
                     <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
-                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i> Instituciones</a></li>
+                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i>
+                            Instituciones</a></li>
                     <li><a href="/src/views/view_admin/alerts.html"><i class="fa-solid fa-bell"></i> Alertas</a></li>
                     <li><a href="#" class="active"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
-                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
-                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i>
+                            Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a>
+                    </li>
                 </ul>
             </nav>
         </aside>
@@ -40,7 +47,7 @@
                     <h1>Módulo de Estadísticas</h1>
                     <p>Análisis consolidado de convivencia escolar y salud mental en el distrito.</p>
                 </div>
-                
+
                 <!-- Filtros del Dashboard -->
                 <div class="dashboard-filters">
                     <select class="filter-select">
@@ -57,7 +64,7 @@
                         <option value="suroriente">Suroriente</option>
                         <option value="metropolitana">Metropolitana</option>
                     </select>
-                    
+
                     <button class="btn-refresh"><i class="fa-solid fa-arrows-rotate"></i> Actualizar</button>
                 </div>
             </header>
@@ -83,7 +90,7 @@
 
             <!-- Sección de Gráficos Principales (Grid de 2 Columnas) -->
             <section class="charts-grid">
-                
+
                 <!-- Gráfico 1: Tendencia Temporal -->
                 <div class="chart-container-card">
                     <div class="chart-header">
@@ -91,9 +98,7 @@
                         <span class="sub-text">Histórico acumulado de incidencias</span>
                     </div>
                     <div class="chart-placeholder">
-                        <!-- Aquí se renderiza el canvas de Chart.js -->
-                        <div class="simulated-chart-line"></div>
-                        <p class="placeholder-text">[ Espacio reservado para Gráfico de Líneas / Tendencia ]</p>
+                        <canvas id="trendsChart"></canvas>
                     </div>
                 </div>
 
@@ -104,9 +109,7 @@
                         <span class="sub-text">Distribución porcentual por categorías</span>
                     </div>
                     <div class="chart-placeholder">
-                        <!-- Espacio reservado para gráfico circular o barras -->
-                        <div class="simulated-chart-pie"></div>
-                        <p class="placeholder-text">[ Espacio reservado para Gráfico de Dona / Barra de Motivos ]</p>
+                        <canvas id="categoriesChart"></canvas>
                     </div>
                 </div>
 
@@ -116,8 +119,10 @@
             <section class="management-card table-section">
                 <div class="table-header">
                     <div>
-                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Focos de Atención Prioritaria (Top IEDs)</h3>
-                        <p class="sub-text">Colegios con mayor volumen de alertas activas en el periodo seleccionado.</p>
+                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Focos de Atención Prioritaria (Top IEDs)
+                        </h3>
+                        <p class="sub-text">Colegios con mayor volumen de alertas activas en el periodo seleccionado.
+                        </p>
                     </div>
                 </div>
 
@@ -139,7 +144,11 @@
                                 <td>Riomar</td>
                                 <td>38</td>
                                 <td><span class="indicator text-danger">12 Críticos</span></td>
-                                <td><div class="progress-bar-container"><div class="progress bg-danger" style="width: 85%;"></div></div></td>
+                                <td>
+                                    <div class="progress-bar-container">
+                                        <div class="progress bg-danger" style="width: 85%;"></div>
+                                    </div>
+                                </td>
                                 <td><button class="btn-table-action">Inspeccionar</button></td>
                             </tr>
                             <tr>
@@ -147,7 +156,11 @@
                                 <td>Suroccidente</td>
                                 <td>29</td>
                                 <td><span class="indicator text-warning">5 Críticos</span></td>
-                                <td><div class="progress-bar-container"><div class="progress bg-warning" style="width: 60%;"></div></div></td>
+                                <td>
+                                    <div class="progress-bar-container">
+                                        <div class="progress bg-warning" style="width: 60%;"></div>
+                                    </div>
+                                </td>
                                 <td><button class="btn-table-action">Inspeccionar</button></td>
                             </tr>
                             <tr>
@@ -155,7 +168,11 @@
                                 <td>Suroriente</td>
                                 <td>22</td>
                                 <td><span class="indicator text-success">2 Críticos</span></td>
-                                <td><div class="progress-bar-container"><div class="progress bg-success" style="width: 35%;"></div></div></td>
+                                <td>
+                                    <div class="progress-bar-container">
+                                        <div class="progress bg-success" style="width: 35%;"></div>
+                                    </div>
+                                </td>
                                 <td><button class="btn-table-action">Inspeccionar</button></td>
                             </tr>
                         </tbody>
@@ -170,6 +187,8 @@
     <footer class="footer">
         <p>&copy; 2026 Barranquilla Convive. Módulo de Inteligencia de Datos y Análisis Predictivo Institucional.</p>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/src/views/view_admin/statistics.js"></script>
 </body>
+
 </html>

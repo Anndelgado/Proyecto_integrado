@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barranquilla Convive - Centro de Reportes</title>
     <!-- FontAwesome para los íconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/src/views/view_admin/css/reports.css">
 </head>
+
 <body>
 
     <div class="main-container">
@@ -18,14 +22,17 @@
                 <p>Logo de Barranquilla Convive<br>Medidas aprox: 150px x 60px</p>
             </div>
             <nav>
-                 <ul>
+                <ul>
                     <li><a href="/src/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
                     <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
-                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i> Instituciones</a></li>
+                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i>
+                            Instituciones</a></li>
                     <li><a href="/src/views/view_admin/alerts.html"><i class="fa-solid fa-bell"></i> Alertas</a></li>
-                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
-                    <li><a href="#"  class="active"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
-                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
+                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i>
+                            Estadísticas</a></li>
+                    <li><a href="#" class="active"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a>
+                    </li>
                 </ul>
             </nav>
         </aside>
@@ -37,17 +44,19 @@
             <header class="top-header">
                 <div class="header-welcome">
                     <h1>Centro de Reportes y Descargas</h1>
-                    <p>Exporta bitácoras, consolidados institucionales y auditorías oficiales en formato PDF o Excel.</p>
+                    <p>Exporta bitácoras, consolidados institucionales y auditorías oficiales en formato PDF o Excel.
+                    </p>
                 </div>
             </header>
 
             <div class="report-workspace-grid">
-                
+
                 <!-- Sección Izquierda: Configuración del Reporte a Medida -->
                 <section class="management-card form-section">
                     <div class="section-title-box">
                         <h3><i class="fa-solid fa-sliders"></i> Configurar Reporte a la Medida</h3>
-                        <p class="sub-text">Selecciona los parámetros para estructurar tu documento de rendición de cuentas.</p>
+                        <p class="sub-text">Selecciona los parámetros para estructurar tu documento de rendición de
+                            cuentas.</p>
                     </div>
 
                     <form class="report-form" onsubmit="return false;">
@@ -57,7 +66,8 @@
                             <select id="report-type" class="form-control">
                                 <option value="consolidado">Consolidado Distrital de Alertas Comportamentales</option>
                                 <option value="salud-mental">Incidencias Críticas de Salud Mental por IED</option>
-                                <option value="psicologos">Bitácora de Intervención y Tiempos de Respuesta (Psicólogos)</option>
+                                <option value="psicologos">Bitácora de Intervención y Tiempos de Respuesta (Psicólogos)
+                                </option>
                                 <option value="auditoria">Historial de Auditoría de Casos Cerrados</option>
                             </select>
                         </div>
@@ -151,8 +161,10 @@
             <section class="management-card table-section">
                 <div class="table-header">
                     <div>
-                        <h3><i class="fa-solid fa-clock-rotate-left"></i> Historial de Auditoría de Descargas Recientes</h3>
-                        <p class="sub-text">Registro de los últimos documentos generados por el equipo administrativo.</p>
+                        <h3><i class="fa-solid fa-clock-rotate-left"></i> Historial de Auditoría de Descargas Recientes
+                        </h3>
+                        <p class="sub-text">Registro de los últimos documentos generados por el equipo administrativo.
+                        </p>
                     </div>
                 </div>
 
@@ -171,27 +183,33 @@
                         <tbody>
                             <tr>
                                 <td>12/07/2026 - 10:14 AM</td>
-                                <td><i class="fa-solid fa-file-pdf file-icon-pdf"></i> <code>rep_consolidado_trimestral.pdf</code></td>
+                                <td><i class="fa-solid fa-file-pdf file-icon-pdf"></i>
+                                    <code>rep_consolidado_trimestral.pdf</code></td>
                                 <td>Consolidado Distrital</td>
                                 <td>Admin_Sistemas</td>
                                 <td>2.4 MB</td>
-                                <td><button class="btn-table-download"><i class="fa-solid fa-cloud-arrow-down"></i> Bajar</button></td>
+                                <td><button class="btn-table-download"><i class="fa-solid fa-cloud-arrow-down"></i>
+                                        Bajar</button></td>
                             </tr>
                             <tr>
                                 <td>11/07/2026 - 04:32 PM</td>
-                                <td><i class="fa-solid fa-file-excel file-icon-excel"></i> <code>incidencias_riomar_2026.xlsx</code></td>
+                                <td><i class="fa-solid fa-file-excel file-icon-excel"></i>
+                                    <code>incidencias_riomar_2026.xlsx</code></td>
                                 <td>Salud Mental IED</td>
                                 <td>Psic_Coordinador</td>
                                 <td>845 KB</td>
-                                <td><button class="btn-table-download"><i class="fa-solid fa-cloud-arrow-down"></i> Bajar</button></td>
+                                <td><button class="btn-table-download"><i class="fa-solid fa-cloud-arrow-down"></i>
+                                        Bajar</button></td>
                             </tr>
                             <tr>
                                 <td>09/07/2026 - 08:11 AM</td>
-                                <td><i class="fa-solid fa-file-pdf file-icon-pdf"></i> <code>bitacora_tiempos_respuesta.pdf</code></td>
+                                <td><i class="fa-solid fa-file-pdf file-icon-pdf"></i>
+                                    <code>bitacora_tiempos_respuesta.pdf</code></td>
                                 <td>Bitácora Psicólogos</td>
                                 <td>Admin_Sistemas</td>
                                 <td>1.9 MB</td>
-                                <td><button class="btn-table-download"><i class="fa-solid fa-cloud-arrow-down"></i> Bajar</button></td>
+                                <td><button class="btn-table-download"><i class="fa-solid fa-cloud-arrow-down"></i>
+                                        Bajar</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -205,6 +223,8 @@
     <footer class="footer">
         <p>&copy; 2026 Barranquilla Convive. Subsistema de Trazabilidad Documental y Evidencia Institucional.</p>
     </footer>
-
+    
+    <script src="/src/views/view_admin/reports.js"></script>
 </body>
+
 </html>
