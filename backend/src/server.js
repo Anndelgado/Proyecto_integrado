@@ -3,5 +3,5 @@ import app from "./app.js";
 const PORT = 3000;
 
 app.listen(PORT, ()=> {
-    console.log(`Servidor corriendo en el puerto http://Localhost:${PORT}`)
+    console.log(`Servidor ejecutándose en el puerto http://localhost:${PORT}`)
 });

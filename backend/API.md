@@ -2,53 +2,53 @@
 
 ## Users
 
-### GET /users
+### GET /api/v1/users
 obtener todos los usuarios.
 
-### GET /users/:id
+### GET /api/v1/users/:id
 obtener usuario especifico por id.
 
-### POST /users
+### POST /api/v1/users
 crear un nuevo usuario.
 
-### PUT /users/:id
+### PUT /api/v1/users/:id
 actualizar un usuario especifico por id.
 
-### DELETE /users/:id
+### DELETE /api/v1/users/:id
 eleminar un usuario especifico.
 
 
 ## Institutions
 
-### GET /institutions
+### GET /api/v1/institutions
 obtener todas las instituciones.
 
-### GET /institutions/:id
+### GET /api/v1/institutions/:id
 obtener institución especifica por id.
 
-### POST /institutions
+### POST /api/v1/institutions
 crear una nueva institución.
 
-### PUT /institutions:id
+### PUT /api/v1/institutions:id
 actualizar una institución especifica por id.
 
-### DELETE /institutions/:id
+### DELETE /api/v1/institutions/:id
 eleminar una institución especifica.
 
 
 ## Alerts
 
-### GET /alerts
+### GET /api/v1/alerts
 obtener todas las alertas.
 
-### GET /alerts/:id
+### GET /api/v1/alerts/:id
 obtener alerta especifica por id.
 
-### POST /alerts
+### POST /api/v1/alerts
 crear una nueva alerta.
 
-### PUT /alerts/:id
+### PUT /api/v1/alerts/:id
 actualizar una alerta existente.
 
-### DELETE /alerts/:id
+### DELETE /api/v1/alerts/:id
 eleminar una alerta existente.
