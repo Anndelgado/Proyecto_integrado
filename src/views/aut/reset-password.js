@@ -1,15 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const formReset = document.getElementById('reset-form');
     const inputNewPassword = document.getElementById('new-password');
-    const btnReset = document.getElementById('btn-reset');
 
-    // 1. CAPTURAR EL TOKEN DE LA URL AUTOMÁTICAMENTE
+    // Capturar el token de la URL automáticamente
     const parametrosURL = new URLSearchParams(window.location.search);
     const tokenURL = parametrosURL.get('token');
 
-    // Si alguien entra a esta página sin un token en la URL, lo expulsamos al login
+    // Bloqueo inmediato si entran sin token en la URL
     if (!tokenURL) {
-        alert("❌ Enlace inválido o sin token de acceso.");
+        alert("Acceso inválido. Falta el token de seguridad o el enlace está incompleto.");
         window.location.href = './login.html';
         return;
     }
@@ -18,41 +17,39 @@ document.addEventListener('DOMContentLoaded', () => {
         formReset.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const nuevaPassword = inputNewPassword.value;
+            const nuevaPassword = inputNewPassword.value.trim();
 
             if (nuevaPassword.length < 6) {
-                alert("⚠️ La contraseña debe tener al menos 6 caracteres.");
+                alert("La nueva contraseña debe tener un mínimo de 6 caracteres.");
                 return;
             }
 
-            // Traemos los usuarios del sistema
             let usuarios = JSON.parse(localStorage.getItem('usuarios_sistema')) || [];
-
-            // 2. BUSCAR EL USUARIO QUE TENGA EL TOKEN DE LA URL
             const usuarioEncontrado = usuarios.find(user => user.resetToken === tokenURL);
 
+            // Validar si el token existe en el almacenamiento
             if (!usuarioEncontrado) {
-                alert("❌ El enlace de recuperación es inválido o ya fue utilizado.");
+                alert("El enlace de recuperación es inválido o ya fue utilizado anteriormente.");
                 window.location.href = './login.html';
                 return;
             }
 
-            // 3. VERIFICAR QUE EL TOKEN NO HAYA EXPIRADO (Comparando tiempos)
+            // Validar si el token ya expiró por tiempo
             if (Date.now() > usuarioEncontrado.resetTokenExpires) {
-                alert("⏰ El enlace de recuperación ha expirado (Límite: 15 minutos). Solicite uno nuevo.");
+                alert("El enlace de recuperación ha expirado tras 15 minutos. Solicite uno nuevo.");
                 window.location.href = './forgot-password.html';
                 return;
             }
 
-            // 4. ACTUALIZAR LA CONTRASEÑA Y LIMPIAR EL TOKEN (Para que no se vuelva a usar)
-            usuarioEncontrado.pass = nuevaPassword; // Aquí se actualiza la clave común
-            delete usuarioEncontrado.resetToken;        // Borramos el token usado
-            delete usuarioEncontrado.resetTokenExpires; // Borramos la expiración
+            // Actualizar la contraseña en formato Base64 y limpiar tokens usados
+            usuarioEncontrado.pass = btoa(nuevaPassword);
+            delete usuarioEncontrado.resetToken;
+            delete usuarioEncontrado.resetTokenExpires;
 
-            // Guardamos los cambios actualizados en el localStorage
             localStorage.setItem('usuarios_sistema', JSON.stringify(usuarios));
 
-            alert("🎉 ¡Contraseña actualizada con éxito!\nYa puede iniciar sesión con sus nuevas credenciales.");
+            // Alerta nativa de éxito total
+            alert("¡Contraseña actualizada con éxito!\nYa puede iniciar sesión con sus nuevas credenciales.");
             window.location.href = './login.html';
         });
     }

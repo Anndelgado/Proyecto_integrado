@@ -9,7 +9,7 @@
 
     // Si no hay sesión, el usuario no se ha logueado. Lo expulsamos al login inmediatamente.
     if (!sessionUser || !sessionUser.rol) {
-        alert("🔒 Acceso denegado. Debe iniciar sesión para acceder a esta sección.");
+        alert("Acceso denegado. Debe iniciar sesión para acceder a esta sección.");
         // Ajusta la ruta relativa para regresar a la carpeta 'aut' desde los dashboards
         window.location.href = "../aut/login.html";
         return;
@@ -44,7 +44,7 @@
      * Función interna para lanzar la alerta de bloqueo y redirigir al login
      */
     function bloquearAcceso(rolRequerido) {
-        alert(`🚫 Acceso Restringido.\nEsta zona es exclusiva para el rol [ ${rolRequerido.toUpperCase()} ].\nSu rol actual es [ ${rolUsuario.toUpperCase()} ].`);
+        alert(`Acceso Restringido.\nEsta zona es exclusiva para el rol [ ${rolRequerido.toUpperCase()} ].\nSu rol actual es [ ${rolUsuario.toUpperCase()} ].`);
         
         // Lo devolvemos al login de forma segura
         window.location.href = "../aut/login.html";

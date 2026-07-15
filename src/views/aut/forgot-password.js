@@ -1,7 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const formForgot = document.getElementById('forgot-form'); // Asegúrate que tu HTML tenga este ID
+    const formForgot = document.getElementById('forgot-form');
     const inputEmail = document.getElementById('forgot-email');
     const btnSubmit = document.getElementById('btn-forgot');
+
+
+    if (!localStorage.getItem('usuarios_sistema')) {
+        const usuarioPrueba = [{ email: 'prueba@iedbarranquilla.edu.co', pass: btoa('estudiante123'), rol: 'estudiante' }];
+        localStorage.setItem('usuarios_sistema', JSON.stringify(usuarioPrueba));
+    }
+
 
     if (formForgot) {
         formForgot.addEventListener('submit', (e) => {
@@ -18,14 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 // Traemos los usuarios reales del sistema
                 let usuarios = JSON.parse(localStorage.getItem('usuarios_sistema')) || [];
-                
+
                 // Buscamos si el usuario existe
                 const usuarioIndex = usuarios.findIndex(user => user.email === emailIngresado);
 
                 if (usuarioIndex !== -1) {
                     // 1. Generar Token único aleatorio de 9 caracteres
                     const tokenSimulado = Math.random().toString(36).substring(2, 11).toUpperCase();
-                    
+
                     // 2. Definir tiempo de expiración (Hora actual + 15 minutos)
                     const tiempoExpiracion = Date.now() + (15 * 60 * 1000);
 
@@ -35,19 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('usuarios_sistema', JSON.stringify(usuarios));
 
                     // 4. Crear el enlace que se "enviaría" por correo
-                    const enlaceRecuperacion = `./reset-password.html?token=${tokenSimulado}`;
-                    
-                    // IMPRESIÓN CRÍTICA: Esto te servirá para hacer la demostración del proyecto
-                    console.log(`%c[SERVIDOR SIMULADO] Correo enviado a: ${emailIngresado}`, 'color: green; font-weight: bold;');
-                    console.log(`%cEnlace de recuperación: ${enlaceRecuperacion}`, 'color: blue; text-decoration: underline;');
+                    const enlaceRecuperacion = `${window.location.origin}/src/views/aut/reset-password.html?token=${tokenSimulado}`;
 
-                    alert("📩 Si el correo institucional es válido, se ha enviado un enlace de recuperación.\n\n⚠️ NOTA PARA PRUEBAS: Abre la consola del navegador (F12) para ver el enlace simulado.");
-                    
-                    // Redirigir al login después de avisar
-                    window.location.href = './login.html';
+                    console.log(`[SERVIDOR SIMULADO] Correo enviado a: ${emailIngresado}`);
+                    console.log(`Enlace de recuperación: ${enlaceRecuperacion}`);
+
+                    alert("Si el correo institucional es válido, se ha enviado un enlace de recuperación.\n\n NOTA PARA PRUEBAS: Abre la consola del navegador (F12) para ver el enlace simulado.");
+                    restaurarBoton();
+
                 } else {
                     // Por seguridad de datos, mostramos el mismo mensaje aunque el correo no exista
-                    alert("📩 Si el correo institucional es válido, se ha enviado un enlace de recuperación.");
+                    alert("Si el correo institucional es válido, se ha enviado un enlace de recuperación.");
                     restaurarBoton();
                 }
             }, 1500);
