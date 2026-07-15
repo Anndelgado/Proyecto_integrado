@@ -1,182 +1,287 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ==========================================================
-    // 1. CAPTURA DE COMPONENTES DE LA INTERFAZ
-    // ==========================================================
-    const buscador = document.querySelector('.search-input');
-    const selectores = document.querySelectorAll('.filter-select');
-    const selectRol = selectores[0];    
-    const selectColegio = selectores[1]; 
-    const filasUsuarios = document.querySelectorAll('table tbody tr');
+    // ===================================================
+    // 1. ESTADO DE DATOS (LOCALSTORAGE)
+    // ===================================================
+    const DEFAULT_USERS = [
+        { id: 1, name: 'Andrés Delgado', email: 'andres@convive.com', role: 'Admin', status: 'Activo' },
+        { id: 2, name: 'María Camila', email: 'maria@convive.com', role: 'Moderador', status: 'Activo' }
+    ];
 
-    // Nuevos componentes capturados para estadísticas y acciones
-    const btnCrearUsuario = document.querySelector('.btn-primary');
-    const valorPsicologas = document.querySelector('.stat-card:nth-child(1) .stat-value');
-    const valorProfesores = document.querySelector('.stat-card:nth-child(2) .stat-value');
-    const valorPadres = document.querySelector('.stat-card:nth-child(3) .stat-value');
-    const valorTotalGeneral = document.querySelector('.stat-card:nth-child(4) .stat-value');
+    let users = JSON.parse(localStorage.getItem('users')) || DEFAULT_USERS;
 
+    const saveToLocalStorage = () => {
+        localStorage.setItem('users', JSON.stringify(users));
+    };
 
-    // ==========================================================
-    // 2. LÓGICA DE CONTADORES (RECUADROS SUPERIORES)
-    // ==========================================================
-    function calcularEstadisticas() {
-        let cuentaPsico = 0;
-        let cuentaProfe = 0;
-        let cuentaPadre = 0;
-        let cuentaTotalActivosVisibles = 0;
+    // ===================================================
+    // 2. RENDERIZAR TABLA DINÁMICAMENTE
+    // ===================================================
+    const tableBody = document.querySelector('.users-table tbody');
 
-        // Recorremos la tabla para contar cuántos usuarios hay en el HTML real
-        filasUsuarios.forEach(fila => {
-            const textoRol = fila.querySelector('.badge').innerText.toLowerCase();
-            const estaInactivo = fila.querySelector('.status-dot').classList.contains('inactive');
+    const renderTable = (usersToRender) => {
+        if (!tableBody) return;
+        tableBody.innerHTML = ''; 
 
-            // Solo contamos para los perfiles específicos si están Activos (puedes ajustar esta regla si quieres contar todos)
-            if (!estaInactivo) {
-                if (textoRol.includes('psicóloga')) cuentaPsico++;
-                if (textoRol.includes('profesor')) cuentaProfe++;
-                if (textoRol.includes('padre')) cuentaPadre++;
-            }
+        if (usersToRender.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 30px; color: var(--secondary-color);">
+                        No se encontraron usuarios que coincidan con la búsqueda.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        usersToRender.forEach(user => {
+            const tr = document.createElement('tr');
+            const initial = user.name ? user.name.charAt(0).toUpperCase() : '?';
+            const roleClass = user.role === 'Admin' ? 'badge-admin' : 'badge-moderator';
+            const statusClass = user.status === 'Activo' ? 'status-active' : 'status-inactive';
+
+            tr.innerHTML = `
+                <td data-label="Nombre">
+                    <div class="user-cell">
+                        <div class="user-avatar-small">${initial}</div>
+                        <span>${user.name}</span>
+                    </div>
+                </td>
+                <td data-label="Email">${user.email}</td>
+                <td data-label="Rol"><span class="badge ${roleClass}">${user.role}</span></td>
+                <td data-label="Estado"><span class="${statusClass}">${user.status}</span></td>
+                <td data-label="Acciones">
+                    <div class="table-actions">
+                        <button class="btn-icon btn-edit" data-id="${user.id}">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn-icon btn-danger btn-delete" data-id="${user.id}">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tableBody.appendChild(tr);
         });
 
-        // El total general de la tabla física actual
-        cuentaTotalActivosVisibles = filasUsuarios.length;
+        attachActionEvents();
+    };
 
-        // Inyectamos los números calculados directamente en las tarjetas del HTML
-        if (valorPsicologas) valorPsicologas.innerText = cuentaPsico;
-        if (valorProfesores) valorProfesores.innerText = cuentaProfe;
-        if (valorPadres) valorPadres.innerText = cuentaPadre;
-        if (valorTotalGeneral) valorTotalGeneral.innerText = cuentaTotalActivosVisibles;
+    // ===================================================
+    // 3. BARRA DE BÚSQUEDA
+    // ===================================================
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const filteredUsers = users.filter(user => 
+                user.name.toLowerCase().includes(query) || 
+                user.email.toLowerCase().includes(query)
+            );
+            renderTable(filteredUsers);
+        });
     }
 
+    // ===================================================
+    // 4. CONTROL DE VENTANA MODAL (CREAR / EDITAR)
+    // ===================================================
+    const userModal = document.getElementById('userModal');
+    const btnNewUser = document.querySelector('.btn-primary'); 
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelModalBtn = document.getElementById('cancelModalBtn');
+    const userForm = document.getElementById('userForm');
 
-    // ==========================================================
-    // 3. LÓGICA DE FILTRADO (Buscador y Selectores)
-    // ==========================================================
-    function filtrarUsuarios() {
-        const textoBusqueda = buscador.value.toLowerCase().trim();
-        const rolSeleccionado = selectRol.value.toLowerCase();
-        const colegioSeleccionado = selectColegio.value.toLowerCase();
+    // Elementos del formulario (Capturados de forma segura)
+    const userIdInput = document.getElementById('userId');
+    const userNameInput = document.getElementById('userName');
+    const userEmailInput = document.getElementById('userEmail');
+    const userRoleSelect = document.getElementById('userRole');
+    const userStatusSelect = document.getElementById('userStatus');
+    const modalTitle = document.getElementById('modalTitle');
 
-        filasUsuarios.forEach(fila => {
-            const textoFilaCompleto = fila.innerText.toLowerCase();
-            const textoRol = fila.querySelector('.badge').innerText.toLowerCase();
-            const textoColegio = fila.cells[3].innerText.toLowerCase();
+    const openModal = (title = 'Nuevo Usuario') => {
+        if (!userModal) return;
+        modalTitle.textContent = title;
+        userModal.classList.add('active');
+    };
 
-            const cumpleBuscador = textoFilaCompleto.includes(textoBusqueda);
-            
-            let cumpleRol = false;
-            if (rolSeleccionado === "") {
-                cumpleRol = true;
-            } else if (rolSeleccionado === "admin" && textoRol.includes("rector")) {
-                cumpleRol = true;
-            } else if (rolSeleccionado === "psico" && textoRol.includes("psicóloga")) {
-                cumpleRol = true;
-            } else if (rolSeleccionado === "profe" && textoRol.includes("profesor")) {
-                cumpleRol = true;
-            } else if (rolSeleccionado === "padre" && textoRol.includes("padre")) {
-                cumpleRol = true;
+    const closeModal = () => {
+        if (!userModal) return;
+        userModal.classList.remove('active');
+        userForm.reset();
+        userIdInput.value = ''; // Limpieza total del ID de edición
+    };
+
+    if (btnNewUser) {
+        btnNewUser.addEventListener('click', () => {
+            closeModal(); // Reseteamos cualquier residuo previo
+            openModal('Nuevo Usuario');
+        });
+    }
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if (cancelModalBtn) cancelModalBtn.addEventListener('click', closeModal);
+
+    // Close modal clicking outside
+    if (userModal) {
+        userModal.addEventListener('click', (e) => {
+            if (e.target === userModal) closeModal();
+        });
+    }
+
+    // ===================================================
+    // 5. EVENTO DE GUARDAR (CREAR O EDITAR)
+    // ===================================================
+    if (userForm) {
+        // MUY IMPORTANTE: Quitamos cualquier listener previo para evitar duplicaciones
+        userForm.removeAttribute('onsubmit'); 
+        
+        userForm.onsubmit = (e) => {
+            e.preventDefault();
+
+            // Captura directa y limpia de los valores actuales
+            const idVal = userIdInput.value ? userIdInput.value.trim() : ''; 
+            const name = userNameInput.value ? userNameInput.value.trim() : '';
+            const email = userEmailInput.value ? userEmailInput.value.trim() : '';
+            const role = userRoleSelect.value;
+            const status = userStatusSelect.value;
+
+            // Validación estricta: Solo alerta si realmente están vacíos
+            if (name === '' || email === '') {
+                alert('Por favor, completa todos los campos obligatorios (Nombre y Correo).');
+                return; // Aquí se detiene si falta información
             }
 
-            let terminoColegio = "";
-            if (colegioSeleccionado === "ied1") terminoColegio = "concepción";
-            if (colegioSeleccionado === "ied2") terminoColegio = "robledo";
-            if (colegioSeleccionado === "ied3") terminoColegio = "san josé";
-            
-            const cumpleColegio = colegioSeleccionado === "" || textoColegio.includes(terminoColegio);
-
-            if (cumpleBuscador && cumpleRol && cumpleColegio) {
-                fila.style.display = ''; 
+            if (idVal !== '') {
+                // Modo Edición
+                const targetId = parseInt(idVal);
+                users = users.map(user => {
+                    if (user.id === targetId) {
+                        return { id: targetId, name, email, role, status };
+                    }
+                    return user;
+                });
+                console.log('Usuario actualizado con éxito');
             } else {
-                fila.style.display = 'none'; 
+                // Modo Registro Nuevo
+                const newUser = {
+                    id: Date.now(),
+                    name,
+                    email,
+                    role,
+                    status
+                };
+                users.push(newUser);
+                console.log('Usuario creado con éxito');
             }
+
+            saveToLocalStorage();
+            renderTable(users);
+            closeModal();
+
+            if (searchInput) searchInput.value = ''; // Limpiar buscador
+        };
+    }
+
+    // ===================================================
+    // 6. ACCIONES: EDITAR Y ELIMINAR
+    // ===================================================
+    function attachActionEvents() {
+        // Evento para Editar
+        document.querySelectorAll('.btn-edit').forEach(button => {
+            // Reemplazamos el listener viejo clonando el botón o usandoonclick directo
+            button.onclick = (e) => {
+                e.preventDefault();
+                const id = parseInt(button.getAttribute('data-id'));
+                const userToEdit = users.find(u => u.id === id);
+
+                if (userToEdit) {
+                    userIdInput.value = userToEdit.id;
+                    userNameInput.value = userToEdit.name;
+                    userEmailInput.value = userToEdit.email;
+                    userRoleSelect.value = userToEdit.role;
+                    userStatusSelect.value = userToEdit.status;
+
+                    openModal('Editar Usuario');
+                }
+            };
+        });
+
+        // Evento para Eliminar
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.onclick = (e) => {
+                e.preventDefault();
+                const id = parseInt(button.getAttribute('data-id'));
+                const userToDelete = users.find(u => u.id === id);
+
+                if (userToDelete) {
+                    const confirmDelete = confirm(`¿Estás seguro de que deseas eliminar al usuario "${userToDelete.name}"?`);
+                    if (confirmDelete) {
+                        users = users.filter(u => u.id !== id);
+                        saveToLocalStorage();
+                        renderTable(users);
+                    }
+                }
+            };
         });
     }
 
+    // ===================================================
+    // 7. MENÚS (HAMBURGUESA Y PERFIL)
+    // ===================================================
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-    // ==========================================================
-    // 4. LÓGICA DE BOTONES DE ACCIÓN (Cada Fila de Usuario)
-    // ==========================================================
-    
-    // Escuchamos los clics en toda la tabla y detectamos qué botón exacto se presionó
-    document.querySelector('table tbody').addEventListener('click', (event) => {
-        // Buscamos el botón o el icono contenedor más cercano (.btn-action)
-        const botonClickeado = event.target.closest('.btn-action');
-        if (!botonClickeado) return; // Si hicieron clic fuera de un botón, ignoramos el evento
-
-        // Obtenemos la fila completa 'tr' y el nombre del usuario de esa fila para personalizar la alerta
-        const fila = botonClickeado.closest('tr');
-        const nombreUsuario = fila.querySelector('strong').innerText;
-
-        // ACCIÓN A: Cambiar contraseña (Detectamos por clase 'reset-pass')
-        if (botonClickeado.classList.contains('reset-pass')) {
-            alert(`🔑 Se ha enviado un enlace de restauración de contraseña al correo institucional de: ${nombreUsuario}`);
-        }
-
-        // ACCIÓN B: Desactivar usuario
-        else if (botonClickeado.classList.contains('deactivate')) {
-            const confirmar = confirm(`¿Estás seguro de que deseas desactivar la cuenta de ${nombreUsuario}?`);
-            if (confirmar) {
-                // Cambiamos el puntito visual a inactivo
-                const puntoEstado = fila.querySelector('.status-dot');
-                puntoEstado.className = 'status-dot inactive';
-                
-                // Modificamos el texto al lado del punto
-                puntoEstado.nextSibling.textContent = ' Inactivo';
-                
-                // Transformamos el botón de desactivar a uno de activar dinámicamente
-                botonClickeado.className = 'btn-action activate';
-                botonClickeado.title = 'Activar';
-                botonClickeado.innerHTML = '<i class="fa-solid fa-user-check"></i>';
-                
-                // Actualizamos los contadores superiores de inmediato
-                calcularEstadisticas();
-            }
-        }
-
-        // ACCIÓN C: Activar usuario (Por si estaba inactivo y se presiona 'user-check')
-        else if (botonClickeado.classList.contains('activate')) {
-            // Cambiamos el puntito a activo
-            const puntoEstado = fila.querySelector('.status-dot');
-            puntoEstado.className = 'status-dot active';
-            puntoEstado.nextSibling.textContent = ' Activo';
-
-            // Volvemos a poner el botón de desactivar
-            botonClickeado.className = 'btn-action deactivate';
-            botonClickeado.title = 'Desactivar';
-            botonClickeado.innerHTML = '<i class="fa-solid fa-user-slash"></i>';
-
-            calcularEstadisticas();
-        }
-
-        // ACCIÓN D: Editar Perfil (Cualquier botón de acción restante que no sea especial)
-        else {
-            alert(`📝 Abriendo formulario de edición para el perfil de: ${nombreUsuario}`);
-        }
-    });
-
-
-    // ==========================================================
-    // 5. ACCIÓN DE CREAR NUEVO USUARIO
-    // ==========================================================
-    if (btnCrearUsuario) {
-        btnCrearUsuario.addEventListener('click', () => {
-            const nuevoNombre = prompt("Ingresa el Nombre Completo del nuevo usuario:");
-            if (nuevoNombre) {
-                alert(`🚀 Redireccionando al formulario de registro técnico para matricular a: "${nuevoNombre}" en el sistema.`);
-            }
-        });
+    if (hamburgerBtn && sidebar && sidebarOverlay) {
+        hamburgerBtn.onclick = () => {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+        };
     }
 
+    const closeMenu = () => {
+        if (sidebar && sidebarOverlay) {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        }
+    };
 
-    // ==========================================================
-    // 6. INICIALIZACIÓN AUTOMÁTICA
-    // ==========================================================
-    // Ejecutamos el conteo de datos por primera vez al abrir la pantalla
-    calcularEstadisticas();
+    if (closeSidebarBtn) closeSidebarBtn.onclick = closeMenu;
+    if (sidebarOverlay) sidebarOverlay.onclick = closeMenu;
 
-    // Activamos los escuchas de los filtros
-    if (buscador) buscador.addEventListener('input', filtrarUsuarios);
-    if (selectRol) selectRol.addEventListener('change', filtrarUsuarios);
-    if (selectColegio) selectColegio.addEventListener('change', filtrarUsuarios);
+    // Menú de Perfil
+    const profileTrigger = document.getElementById('profileTrigger');
+    const profileDropdown = document.getElementById('profileDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (profileTrigger && profileDropdown) {
+        profileTrigger.onclick = (e) => {
+            e.stopPropagation();
+            profileTrigger.classList.toggle('active');
+            profileDropdown.classList.toggle('active');
+        };
+
+        document.onclick = () => {
+            profileTrigger.classList.remove('active');
+            profileDropdown.classList.remove('active');
+        };
+
+        profileDropdown.onclick = (e) => {
+            e.stopPropagation();
+        };
+    }
+
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if(confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+            window.location.href = "/src/views/aut/login.html"; 
+        }
+        });
+
+    // ===================================================
+    // 8. RENDER INICIAL
+    // ===================================================
+    renderTable(users);
+
 });

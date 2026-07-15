@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barranquilla Convive - Gestión de Alertas</title>
+    <!-- FontAwesome para los íconos idénticos a tu diseño -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="guard.js"></script>
     <link rel="stylesheet" href="/src/views/view_admin/css/alerts.css">
 </head>
 
@@ -16,7 +16,13 @@
 
     <div class="main-container">
 
-        <aside class="sidebar">
+        <!-- Botón Toggle de Hamburguesa para Móvil -->
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <!-- Sidebar / Menú Lateral Estandarizado -->
+        <aside class="sidebar" id="sidebarMenu">
             <div class="logo-space">
                 <p>Logo de Barranquilla Convive<br>Medidas aprox: 150px x 60px</p>
             </div>
@@ -24,82 +30,94 @@
                 <ul>
                     <li><a href="/src/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
                     <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
-                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i>
-                            Instituciones</a></li>
+                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i> Instituciones</a></li>
                     <li><a href="#" class="active"><i class="fa-solid fa-bell"></i> Alertas</a></li>
-                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i>
-                            Estadísticas</a></li>
-                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i>
-                            Reportes</a></li>
-                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a>
-                    </li>
+                    <li><a href="/src/views/view_admin/statistics.html"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
                 </ul>
             </nav>
         </aside>
 
+        <!-- Capa oscura para cerrar menú móvil -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Área de Contenido Principal -->
         <main class="main-content">
 
+            <!-- Top Header con perfil y dropdown -->
             <header class="top-header">
                 <div class="header-welcome">
                     <h1>Gestión de Alertas</h1>
                     <p>Monitoreo en tiempo real y atención oportuna a incidencias de convivencia y salud mental.</p>
                 </div>
                 <div class="header-profile">
-                    <div class="profile-info">
-                        <div class="avatar-placeholder"></div>
+                    <div class="profile-info" id="profileDropdownBtn">
+                        <div class="avatar-placeholder">
+                            <i class="fa-solid fa-user-tie" style="color: #5c626e; font-size: 18px;"></i>
+                        </div>
                         <span>Administrador</span>
                         <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="profile-dropdown" id="profileDropdownMenu">
+                        <a href="/src/views/view_admin/config.html"><i class="fa-solid fa-user-gear"></i> Mi Perfil</a>
+                        <hr>
+                        <a href="#" id="logoutBtn" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
                     </div>
                 </div>
             </header>
 
-            <section class="stats-cards">
-                <div class="stat-card">
-                    <h2>Alertas Totales</h2>
-                    <p class="stat-value">320</p>
+            <!-- KPIs / Recuadros de Resumen Superior (Dinámicos) -->
+            <section class="kpi-grid">
+                <div class="kpi-card" id="kpiTotal">
+                    <span class="kpi-title">ALERTAS TOTALES</span>
+                    <span class="kpi-value value-dark" id="txtKpiTotal">0</span>
                 </div>
-                <div class="stat-card">
-                    <h2>Alertas Críticas</h2>
-                    <p class="stat-value text-danger">45</p>
+                <div class="kpi-card" id="kpiCritical">
+                    <span class="kpi-title">ALERTAS CRÍTICAS</span>
+                    <span class="kpi-value value-danger" id="txtKpiCritical">0</span>
                 </div>
-                <div class="stat-card">
-                    <h2>En Revisión</h2>
-                    <p class="stat-value text-process">85</p>
+                <div class="kpi-card" id="kpiInProcess">
+                    <span class="kpi-title">EN REVISIÓN</span>
+                    <span class="kpi-value value-warning" id="txtKpiInProcess">0</span>
                 </div>
-                <div class="stat-card">
-                    <h2>Casos Resueltos</h2>
-                    <p class="stat-value text-success">190</p>
+                <div class="kpi-card" id="kpiResolved">
+                    <span class="kpi-title">CASOS RESUELTOS</span>
+                    <span class="kpi-value value-success" id="txtKpiResolved">0</span>
                 </div>
             </section>
 
+            <!-- Panel de Tabla y Filtros -->
             <section class="management-card">
 
                 <div class="toolbar">
                     <div class="filters">
                         <div class="search-container">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" class="search-input"
-                                placeholder="Buscar por radicado, IED o estudiante...">
+                            <input type="text" class="search-input" id="searchInput" placeholder="Buscar por radicado, IED o estudiante...">
                         </div>
 
-                        <select class="filter-select">
+                        <select class="filter-select" id="filterRisk">
                             <option value="">Nivel de Riesgo</option>
-                            <option value="alto">Alto / Crítico</option>
-                            <option value="medio">Medio</option>
-                            <option value="bajo">Bajo</option>
+                            <option value="Alto / Critico">Alto / Crítico</option>
+                            <option value="Medio">Medio</option>
+                            <option value="Bajo">Bajo</option>
                         </select>
 
-                        <select class="filter-select">
+                        <select class="filter-select" id="filterType">
                             <option value="">Tipo de Alerta</option>
-                            <option value="acoso">Acoso Escolar (Bullying)</option>
-                            <option value="psico">Riesgo Psicosocial</option>
-                            <option value="academico">Deserción Académica</option>
+                            <option value="Riesgo Psicosocial / Ansiedad">Riesgo Psicosocial / Ansiedad</option>
+                            <option value="Acoso Escolar (Bullying)">Acoso Escolar (Bullying)</option>
+                            <option value="Deserción / Ausentismo">Deserción / Ausentismo</option>
                         </select>
                     </div>
 
-                    <button class="btn-primary"><i class="fa-solid fa-bell-slash"></i> Historial Completo</button>
+                    <button class="btn-secondary" id="btnResetFilters">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Historial Completo
+                    </button>
                 </div>
 
+                <!-- Tabla Responsiva de Alertas -->
                 <div class="table-responsive">
                     <table>
                         <thead>
@@ -113,72 +131,8 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>#1256</strong></td>
-                                <td>
-                                    <strong>IED La Concepción</strong><br>
-                                    <span class="sub-text">Sede Principal - Riomar</span>
-                                </td>
-                                <td>Riesgo Psicosocial / Ansiedad</td>
-                                <td><span class="badge risk-high">Alto / Crítico</span></td>
-                                <td>Hace 15 min</td>
-                                <td>
-                                    <span class="badge-status status-pending">Pendiente</span>
-                                </td>
-                                <td>
-                                    <div class="actions-btn-group">
-                                        <button class="btn-action view-case" title="Atender / Ver Detalle"><i
-                                                class="fa-solid fa-folder-open"></i></button>
-                                        <button class="btn-action" title="Derivar a Psicóloga"><i
-                                                class="fa-solid fa-share-nodes"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>#1255</strong></td>
-                                <td>
-                                    <strong>IED Jorge Robledo</strong><br>
-                                    <span class="sub-text">Suroccidente</span>
-                                </td>
-                                <td>Acoso Escolar (Bullying)</td>
-                                <td><span class="badge risk-medium">Medio</span></td>
-                                <td>Hace 1 hora</td>
-                                <td>
-                                    <span class="badge-status status-process">En Proceso</span>
-                                </td>
-                                <td>
-                                    <div class="actions-btn-group">
-                                        <button class="btn-action view-case" title="Atender / Ver Detalle"><i
-                                                class="fa-solid fa-folder-open"></i></button>
-                                        <button class="btn-action" title="Derivar a Psicóloga"><i
-                                                class="fa-solid fa-share-nodes"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><strong>#1254</strong></td>
-                                <td>
-                                    <strong>IED San José</strong><br>
-                                    <span class="sub-text">Suroriente</span>
-                                </td>
-                                <td>Deserción / Ausentismo</td>
-                                <td><span class="badge risk-low">Bajo</span></td>
-                                <td>Hace 3 horas</td>
-                                <td>
-                                    <span class="badge-status status-resolved">Resuelto</span>
-                                </td>
-                                <td>
-                                    <div class="actions-btn-group">
-                                        <button class="btn-action view-case" title="Atender / Ver Detalle"><i
-                                                class="fa-solid fa-folder-open"></i></button>
-                                        <button class="btn-action" title="Derivar a Psicóloga"><i
-                                                class="fa-solid fa-share-nodes"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="alertsTableBody">
+                            <!-- Inyectado dinámicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -187,10 +141,95 @@
         </main>
     </div>
 
+    <!-- ==========================================
+         MODALES INTERACTIVOS
+         ========================================== -->
+
+    <!-- Modal 1: Atender Alerta (Cambiar Estado e Historial) -->
+    <div class="modal-wrapper" id="attendModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Atender Caso - <span id="attendRadicado">#1256</span></h3>
+                <button class="modal-close-btn" id="closeAttendModal">&times;</button>
+            </div>
+            <form id="attendForm">
+                <input type="hidden" id="attendIndex" value="">
+                
+                <div class="form-group" style="background: #f8fafc; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>IED:</strong> <span id="attendSchool">IED La Concepción</span></p>
+                    <p style="margin: 0; font-size: 13px;"><strong>Estudiante:</strong> <span id="attendStudent">Juan Pérez (10°B)</span></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="selectStatus">Actualizar Estado del Caso</label>
+                    <select id="selectStatus" required>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En Proceso">En Proceso</option>
+                        <option value="Resuelto">Resuelto</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notesFollowUp">Notas de Seguimiento / Bitácora</label>
+                    <textarea id="notesFollowUp" rows="4" required placeholder="Escribe aquí las observaciones del estado actual, compromisos o acciones realizadas por el equipo directivo..."></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="btnCancelAttend">Cancelar</button>
+                    <button type="submit" class="btn-submit">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Compartir a Psicóloga -->
+    <div class="modal-wrapper" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Derivar a Orientación Escolar</h3>
+                <button class="modal-close-btn" id="closeShareModal">&times;</button>
+            </div>
+            <form id="shareForm">
+                <input type="hidden" id="shareIndex" value="">
+                
+                <div class="form-group">
+                    <label>Institución</label>
+                    <input type="text" id="shareSchoolName" readonly style="background: #f1f5f9; cursor: not-allowed;">
+                </div>
+
+                <div class="form-group">
+                    <label>Psicóloga Orientadora Asignada</label>
+                    <div id="psyStatusContainer" style="padding: 10px; border-radius: 6px; font-weight: 500; font-size: 14px;">
+                        <!-- Se calcula dinámicamente si hay psicóloga asignada en esa IED -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sharePriority">Prioridad de Remisión</label>
+                    <select id="sharePriority">
+                        <option value="Alta">Urgente / Intervención Inmediata</option>
+                        <option value="Media">Prioridad Media</option>
+                        <option value="Baja">Seguimiento Preventivo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="shareMessage">Mensaje de Derivación</label>
+                    <textarea id="shareMessage" rows="3" required placeholder="Instrucciones o detalles que debe priorizar el psicólogo al recibir el caso..."></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="btnCancelShare">Cancelar</button>
+                    <button type="submit" class="btn-submit" id="btnSendShare">Enviar Expediente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <footer class="footer">
-        <p>&copy; 2026 Barranquilla Convive. Todos los derechos reservados. Plataforma Escolar de Alertas y Detección
-            Temprana en Salud Mental.</p>
+        <p>&copy; 2026 Barranquilla Convive. Plataforma Escolar de Alertas y Detección Temprana en Salud Mental.</p>
     </footer>
+
     <script src="/src/views/view_admin/alerts.js"></script>
 </body>
 

@@ -1,105 +1,105 @@
-// Hacemos que la función switchTab sea global para que los atributos 'onclick' del HTML la sigan encontrando sin problemas
-window.switchTab = function(event, tabId) {
-    // 1. Ocultar todos los bloques de contenido de las pestañas
-    const contents = document.querySelectorAll('.tab-content');
-    contents.forEach(content => content.classList.remove('active'));
-
-    // 2. Quitar la clase 'active' de todos los botones de pestañas
-    const buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-
-    // 3. Mostrar el bloque de contenido seleccionado
-    const panelObjetivo = document.getElementById(tabId);
-    if (panelObjetivo) panelObjetivo.classList.add('active');
-
-    // 4. Marcar el botón clickeado como activo
-    event.currentTarget.classList.add('active');
-};
-
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ==========================================================
-    // 1. CAPTURA DE BOTONES DE ACCIÓN GENERALES
-    // ==========================================================
-    const btnGuardar = document.querySelector('.btn-save');
-    const btnRestaurar = document.querySelector('.btn-restore');
+    // Formularios y elementos del DOM
+    const profileForm = document.getElementById('profileForm');
+    const systemParamsForm = document.getElementById('systemParamsForm');
+    const notifEmail = document.getElementById('notifEmail');
+    const notifWeekly = document.getElementById('notifWeekly');
 
-    // Objeto temporal que simula el estado inicial de la Base de Datos para restauraciones
-    const valoresPorDefecto = {
-        'tab-alertas': { horasAtencion: 24, horasEscalado: 48, notificarEmail: true },
-        'tab-seguridad': { expiracion: "90", inactividad: "30", mfa: false },
-        'tab-entidad': { nombre: "Alcaldía de Barranquilla - Secretaría Distrital de Educación", correo: "soporte.convive@barranquilla.gov.co", linea: "(605) 339-1000 ext. 452" }
-    };
+    // Elementos del Toast (Notificación)
+    const toastNotification = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
 
-    // ==========================================================
-    // 2. ACCIÓN: GUARDAR CONFIGURACIONES DE LA PESTAÑA ACTIVA
-    // ==========================================================
-    if (btnGuardar) {
-        btnGuardar.addEventListener('click', () => {
-            // Buscamos cuál es la sub-vista que está visible actualmente
-            const pestañaActiva = document.querySelector('.tab-content.active');
-            const idActivo = pestañaActiva.id;
+    // Menús e interfaz responsive
+    const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const sidebarMenu = document.getElementById('sidebarMenu');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-            // Cambiamos el estado visual del botón para indicar procesamiento en el servidor
-            const textoOriginal = btnGuardar.innerHTML;
-            btnGuardar.disabled = true;
-            btnGuardar.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...`;
+    // ==========================================
+    // LÓGICA DE NOTIFICACIONES TOAST (FEEDBACK)
+    // ==========================================
+    function showToast(message, isSuccess = true) {
+        toastMessage.innerText = message;
+        
+        // Cambiar el icono si es error o éxito
+        const icon = toastNotification.querySelector('i');
+        if (isSuccess) {
+            icon.className = "fa-solid fa-circle-check";
+            icon.style.color = "var(--green-color)";
+        } else {
+            icon.className = "fa-solid fa-circle-exclamation";
+            icon.style.color = "var(--red-color)";
+        }
 
-            setTimeout(() => {
-                btnGuardar.disabled = false;
-                btnGuardar.innerHTML = textoOriginal;
+        toastNotification.classList.add('show');
 
-                // Validación específica en caliente si el usuario está guardando "Datos de la Entidad"
-                if (idActivo === 'tab-entidad') {
-                    const correoInput = pestañaActiva.querySelector('input[type="email"]').value;
-                    if (!correoInput.includes('@') || !correoInput.includes('.')) {
-                        alert("Error de validación: El formato del correo institucional de soporte no es válido.");
-                        return;
-                    }
-                }
-
-                alert("💾 ¡Éxito! Las preferencias del sistema han sido guardadas y aplicadas de forma global en los servidores de Barranquilla Convive.");
-            }, 1000);
-        });
+        setTimeout(() => {
+            toastNotification.classList.remove('show');
+        }, 3000);
     }
 
-    // ==========================================================
-    // 3. ACCIÓN: RESTAURAR VALORES DE FÁBRICA
-    // ==========================================================
-    if (btnRestaurar) {
-        btnRestaurar.addEventListener('click', () => {
-            const pestañaActiva = document.querySelector('.tab-content.active');
-            const idActivo = pestañaActiva.id;
+    // ==========================================
+    // CAPTURA DE EVENTOS DE FORMULARIOS
+    // ==========================================
+    profileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('adminName').value;
+        const email = document.getElementById('adminEmail').value;
+        
+        // Simulación de guardado exitoso
+        showToast(`Perfil de [${name}] actualizado correctamente.`);
+    });
 
-            // Si la pestaña de roles está activa, no hace falta restaurar inputs manuales
-            if (idActivo === 'tab-roles') {
-                alert("👥 Los privilegios de la Matriz de Roles están regidos por decretos distritales y no se pueden alterar.");
-                return;
-            }
+    systemParamsForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const year = document.getElementById('activeYear').value;
+        const risk = document.getElementById('riskThreshold').value;
 
-            const confirmar = confirm("⚠️ ¿Estás seguro de que deseas restablecer los parámetros de esta pestaña a los valores originales del sistema?");
-            if (!confirmar) return;
+        showToast(`Parámetros aplicados: Ciclo ${year} - Umbral al ${risk}%`);
+    });
 
-            // Procesamos la restauración inyectando los datos del objeto inicial en el DOM
-            if (idActivo === 'tab-alertas') {
-                const inputs = pestañaActiva.querySelectorAll('input[type="number"]');
-                inputs[0].value = valoresPorDefecto['tab-alertas'].horasAtencion;
-                inputs[1].value = valoresPorDefecto['tab-alertas'].horasEscalado;
-                pestañaActiva.querySelector('#notify-email').checked = valoresPorDefecto['tab-alertas'].notificarEmail;
-            } 
-            else if (idActivo === 'tab-seguridad') {
-                const selects = pestañaActiva.querySelectorAll('select');
-                selects[0].value = valoresPorDefecto['tab-seguridad'].expiracion;
-                selects[1].value = valoresPorDefecto['tab-seguridad'].inactividad;
-                pestañaActiva.querySelector('#mfa-auth').checked = valoresPorDefecto['tab-seguridad'].mfa;
-            } 
-            else if (idActivo === 'tab-entidad') {
-                pestañaActiva.querySelector('input[type="text"]').value = valoresPorDefecto['tab-entidad'].nombre;
-                pestañaActiva.querySelector('input[type="email"]').value = valoresPorDefecto['tab-entidad'].correo;
-                pestañaActiva.querySelectorAll('input')[2].value = valoresPorDefecto['tab-entidad'].linea; // Captura la extensión telefónica
-            }
+    // Guardado interactivo en tiempo real al cambiar Toggles
+    notifEmail.addEventListener('change', () => {
+        const state = notifEmail.checked ? "Activadas" : "Desactivadas";
+        showToast(`Notificaciones inmediatas por Email: ${state}`);
+    });
 
-            alert("🔄 Valores reestablecidos con éxito en el panel local.");
-        });
-    }
+    notifWeekly.addEventListener('change', () => {
+        const state = notifWeekly.checked ? "Activadas" : "Desactivadas";
+        showToast(`Resúmenes semanales: ${state}`);
+    });
+
+    // ==========================================
+    // INTERFAZ GENERAL (Perfil y Hamburguesa)
+    // ==========================================
+    profileDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdownMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', () => {
+        profileDropdownMenu.classList.remove('show');
+    });
+
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if(confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+            window.location.href = "/src/views/aut/login.html"; 
+        }
+    });
+
+    mobileNavToggle.addEventListener('click', () => {
+        sidebarMenu.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+
+    sidebarOverlay.addEventListener('click', () => {
+        sidebarMenu.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
 });

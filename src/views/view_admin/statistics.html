@@ -4,13 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barranquilla Convive - Estadísticas y Paneles</title>
-    <!-- FontAwesome para los íconos de la interfaz -->
+    <title>Barranquilla Convive - Estadísticas</title>
+    <!-- FontAwesome para consistencia de íconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="guard.js"></script>
-    <!-- Hoja de estilos externa -->
     <link rel="stylesheet" href="/src/views/view_admin/css/statistics.css">
 </head>
 
@@ -18,8 +16,8 @@
 
     <div class="main-container">
 
-        <!-- Sidebar / Menú Lateral (Estandarizado) -->
-        <aside class="sidebar">
+        <!-- Sidebar / Menú Lateral Estandarizado -->
+        <aside class="sidebar" id="sidebarMenu">
             <div class="logo-space">
                 <p>Logo de Barranquilla Convive<br>Medidas aprox: 150px x 60px</p>
             </div>
@@ -27,104 +25,115 @@
                 <ul>
                     <li><a href="/src/views/view_admin/index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
                     <li><a href="/src/views/view_admin/users.html"><i class="fa-solid fa-users"></i> Usuarios</a></li>
-                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i>
-                            Instituciones</a></li>
+                    <li><a href="/src/views/view_admin/institutions.html"><i class="fa-solid fa-school"></i> Instituciones</a></li>
                     <li><a href="/src/views/view_admin/alerts.html"><i class="fa-solid fa-bell"></i> Alertas</a></li>
                     <li><a href="#" class="active"><i class="fa-solid fa-chart-line"></i> Estadísticas</a></li>
-                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i>
-                            Reportes</a></li>
-                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a>
-                    </li>
+                    <li><a href="/src/views/view_admin/reports.html"><i class="fa-solid fa-file-contract"></i> Reportes</a></li>
+                    <li><a href="/src/views/view_admin/config.html"><i class="fa-solid fa-gear"></i> Configuración</a></li>
                 </ul>
             </nav>
         </aside>
 
-        <!-- Contenido Principal -->
+        <!-- Capa oscura para cerrar menú móvil -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Área de Contenido Principal -->
         <main class="main-content">
 
-            <!-- Encabezado con Filtros Globales -->
+            <!-- Botón de Hamburguesa Minimalista (Igual al de Inicio/Instituciones) -->
+            <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Top Header con Filtros de Período y Localidad -->
             <header class="top-header">
                 <div class="header-welcome">
                     <h1>Módulo de Estadísticas</h1>
                     <p>Análisis consolidado de convivencia escolar y salud mental en el distrito.</p>
                 </div>
+                
+                <div class="header-controls">
+                    <div class="header-filters">
+                        <select class="filter-select" id="filterPeriod">
+                            <option value="trimestre">Último Trimestre</option>
+                            <option value="semestre">Último Semestre</option>
+                            <option value="anio">Año Completo</option>
+                        </select>
+                        
+                        <select class="filter-select" id="filterLocalidad">
+                            <option value="Todas">Todas las Localidades</option>
+                            <option value="Riomar">Riomar</option>
+                            <option value="Suroccidente">Suroccidente</option>
+                            <option value="Suroriente">Suroriente</option>
+                        </select>
 
-                <!-- Filtros del Dashboard -->
-                <div class="dashboard-filters">
-                    <select class="filter-select">
-                        <option value="">Filtrar por Periodo</option>
-                        <option value="mes">Este Mes</option>
-                        <option value="trimestre" selected>Último Trimestre</option>
-                        <option value="anio">Año 2026</option>
-                    </select>
+                        <button class="btn-refresh" id="btnRefreshStats">
+                            <i class="fa-solid fa-rotate"></i> Actualizar
+                        </button>
+                    </div>
 
-                    <select class="filter-select">
-                        <option value="">Todas las Localidades</option>
-                        <option value="riomar">Riomar</option>
-                        <option value="suroccidente">Suroccidente</option>
-                        <option value="suroriente">Suroriente</option>
-                        <option value="metropolitana">Metropolitana</option>
-                    </select>
-
-                    <button class="btn-refresh"><i class="fa-solid fa-arrows-rotate"></i> Actualizar</button>
+                    <!-- Perfil con Dropdown para Cerrar Sesión -->
+                    <div class="header-profile">
+                        <div class="profile-info" id="profileDropdownBtn">
+                            <div class="avatar-placeholder">
+                                <i class="fa-solid fa-user-tie" style="color: #5c626e; font-size: 18px;"></i>
+                            </div>
+                            <span>Administrador</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-dropdown" id="profileDropdownMenu">
+                            <a href="/src/views/view_admin/config.html"><i class="fa-solid fa-user-gear"></i> Mi Perfil</a>
+                            <hr>
+                            <a href="#" id="logoutBtn" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+                        </div>
+                    </div>
                 </div>
             </header>
 
-            <!-- Tarjetas de Impacto de Gestión (KPIs) -->
-            <section class="stats-cards">
-                <div class="stat-card">
-                    <h2>Eficacia de Resolución</h2>
-                    <p class="stat-value text-success">84.2%</p>
-                    <span class="stat-trend"><i class="fa-solid fa-arrow-up"></i> +3.1% vs mes anterior</span>
-                </div>
-                <div class="stat-card">
-                    <h2>Estudiantes Atendidos</h2>
-                    <p class="stat-value">1,420</p>
-                    <span class="stat-trend text-neutral">Casos individuales analizados</span>
-                </div>
-                <div class="stat-card">
-                    <h2>Tiempo de Respuesta</h2>
-                    <p class="stat-value text-warning">4.2 hrs</p>
-                    <span class="stat-trend"><i class="fa-solid fa-arrow-down"></i> -1.5 hrs de optimización</span>
+            <!-- KPIs / Recuadros Superiores (Solo se conserva Estudiantes Atendidos) -->
+            <section class="kpi-section">
+                <div class="kpi-card-hero">
+                    <div class="kpi-icon-box">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div class="kpi-details">
+                        <span class="kpi-title">ESTUDIANTES ATENDIDOS</span>
+                        <span class="kpi-value" id="txtKpiStudents">1,420</span>
+                        <span class="kpi-subtext">Casos individuales analizados en el periodo seleccionado</span>
+                    </div>
                 </div>
             </section>
 
-            <!-- Sección de Gráficos Principales (Grid de 2 Columnas) -->
+            <!-- Grid de Gráficos de Estadísticas -->
             <section class="charts-grid">
-
-                <!-- Gráfico 1: Tendencia Temporal -->
-                <div class="chart-container-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-chart-area"></i> Tendencia Mensual de Reportes</h3>
-                        <span class="sub-text">Histórico acumulado de incidencias</span>
+                <!-- Gráfico 1: Tendencia Lineal -->
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h3><i class="fa-solid fa-chart-line" style="color: #2ecc71; margin-right: 8px;"></i> Tendencia Mensual de Reportes</h3>
+                        <span>Histórico acumulado de incidencias</span>
                     </div>
-                    <div class="chart-placeholder">
-                        <canvas id="trendsChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Gráfico 2: Tipologías comunes -->
-                <div class="chart-container-card">
-                    <div class="chart-header">
-                        <h3><i class="fa-solid fa-chart-pie"></i> Tipologías de Alertas Frecuentes</h3>
-                        <span class="sub-text">Distribución porcentual por categorías</span>
-                    </div>
-                    <div class="chart-placeholder">
-                        <canvas id="categoriesChart"></canvas>
+                    <div class="chart-container">
+                        <canvas id="lineChartTendency"></canvas>
                     </div>
                 </div>
 
+                <!-- Gráfico 2: Tipologías -->
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h3><i class="fa-solid fa-chart-pie" style="color: #f79c1d; margin-right: 8px;"></i> Tipologías de Alertas Frecuentes</h3>
+                        <span>Distribución porcentual por categorías</span>
+                    </div>
+                    <div class="chart-container-pie">
+                        <canvas id="pieChartTypes"></canvas>
+                    </div>
+                </div>
             </section>
 
-            <!-- Fila Inferior: Top de IEDs Críticas -->
-            <section class="management-card table-section">
+            <!-- Tabla de Focos de Atención Prioritaria (Sin columna de Acción) -->
+            <section class="management-card">
                 <div class="table-header">
-                    <div>
-                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Focos de Atención Prioritaria (Top IEDs)
-                        </h3>
-                        <p class="sub-text">Colegios con mayor volumen de alertas activas en el periodo seleccionado.
-                        </p>
-                    </div>
+                    <h2><i class="fa-solid fa-triangle-exclamation" style="color: #e74c3c; margin-right: 8px;"></i> Focos de Atención Prioritaria (Top IEDs)</h2>
+                    <p>Colegios con mayor volumen de alertas activas en el periodo seleccionado.</p>
                 </div>
 
                 <div class="table-responsive">
@@ -136,46 +145,10 @@
                                 <th>Alertas Totales</th>
                                 <th>Casos Críticos</th>
                                 <th>Índice de Riesgo</th>
-                                <th>Acción</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>IED La Concepción</strong></td>
-                                <td>Riomar</td>
-                                <td>38</td>
-                                <td><span class="indicator text-danger">12 Críticos</span></td>
-                                <td>
-                                    <div class="progress-bar-container">
-                                        <div class="progress bg-danger" style="width: 85%;"></div>
-                                    </div>
-                                </td>
-                                <td><button class="btn-table-action">Inspeccionar</button></td>
-                            </tr>
-                            <tr>
-                                <td><strong>IED Jorge Robledo</strong></td>
-                                <td>Suroccidente</td>
-                                <td>29</td>
-                                <td><span class="indicator text-warning">5 Críticos</span></td>
-                                <td>
-                                    <div class="progress-bar-container">
-                                        <div class="progress bg-warning" style="width: 60%;"></div>
-                                    </div>
-                                </td>
-                                <td><button class="btn-table-action">Inspeccionar</button></td>
-                            </tr>
-                            <tr>
-                                <td><strong>IED San José</strong></td>
-                                <td>Suroriente</td>
-                                <td>22</td>
-                                <td><span class="indicator text-success">2 Críticos</span></td>
-                                <td>
-                                    <div class="progress-bar-container">
-                                        <div class="progress bg-success" style="width: 35%;"></div>
-                                    </div>
-                                </td>
-                                <td><button class="btn-table-action">Inspeccionar</button></td>
-                            </tr>
+                        <tbody id="statsTableBody">
+                            <!-- Datos inyectados dinámicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -184,10 +157,11 @@
         </main>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2026 Barranquilla Convive. Módulo de Inteligencia de Datos y Análisis Predictivo Institucional.</p>
+        <p>&copy; 2026 Barranquilla Convive. Plataforma Escolar de Alertas y Detección Temprana en Salud Mental.</p>
     </footer>
+
+    <!-- CDN de Chart.js para renderizado de gráficos nativos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/src/views/view_admin/statistics.js"></script>
 </body>

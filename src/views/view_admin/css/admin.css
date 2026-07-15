@@ -19,21 +19,43 @@ body {
 
 .main-container {
     display: flex;
-    flex-wrap: wrap; /* Permite que el footer se ajuste */
+    flex-wrap: wrap; 
+}
+
+/* Capa de fondo oscura para el menú móvil */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 998;
+}
+
+.sidebar-overlay.active {
+    display: block;
 }
 
 /* ===================================================
-   SIDEBAR ESTANDARIZADA (USAR EN TODAS LAS VISTAS)
+   SIDEBAR ESTANDARIZADA
    =================================================== */
 .sidebar {
-    width: 260px; /* Ancho fijo estricto para que nunca varíe el espacio */
+    width: 260px; 
     min-width: 260px;
     background-color: #ffffff;
     border-right: 1px solid #e2e8f0;
-    padding: 24px 16px; /* Espaciado interno unificado */
+    padding: 24px 16px; 
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo-space {
@@ -45,7 +67,18 @@ body {
     text-align: center;
     color: #999;
     font-size: 11px;
-    border: 1px dashed #ccc; /* Espacio para el logo institucional */
+    border: 1px dashed #ccc; 
+    flex: 1;
+}
+
+.close-sidebar-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--secondary-color);
+    cursor: pointer;
+    margin-bottom: 32px;
 }
 
 .sidebar nav ul {
@@ -55,25 +88,24 @@ body {
 }
 
 .sidebar nav ul li {
-    margin-bottom: 8px; /* Separación vertical uniforme entre botones */
+    margin-bottom: 8px; 
 }
 
 .sidebar nav ul li a {
     display: flex;
     align-items: center;
-    padding: 12px 16px; /* Padding exacto para la forma de cápsula redondeada */
+    padding: 12px 16px; 
     text-decoration: none;
-    color: #5c626e; /* Color gris de los textos inactivos */
+    color: #5c626e; 
     font-size: 15px;
-    font-weight: normal; /* Letra normal en todos los botones por igual */
-    border-radius: 10px; /* Bordes perfectamente redondeados como el de Inicio */
+    font-weight: normal; 
+    border-radius: 10px; 
     transition: all 0.2s ease-in-out;
 }
 
-/* Alineación milimétrica de íconos */
 .sidebar nav ul li a i {
     font-size: 16px;
-    margin-right: 14px; /* Distancia fija para que ningún texto se ruede */
+    margin-right: 14px; 
     width: 20px;
     text-align: center;
     display: flex;
@@ -81,23 +113,22 @@ body {
     align-items: center;
 }
 
-/* Estado hover (pasar el mouse por encima) */
 .sidebar nav ul li a:hover {
     background-color: #f8fafc;
     color: #333;
 }
 
-/* Estado activo unificado (El botón naranja de la vista actual) */
 .sidebar nav ul li a.active {
-    background-color: #f79c1d; /* El naranja exacto de Barranquilla Convive */
-    color: #ffffff !important; /* Texto totalmente blanco */
-    font-weight: normal; /* Se mantiene normal para evitar que se ruede o ensanche */
+    background-color: #f79c1d; 
+    color: #ffffff !important; 
+    font-weight: normal; 
 }
 
-/* Main Content Area */
+/* Área de Contenido Principal */
 .main-content {
     flex: 1;
     padding: 20px 40px;
+    min-width: 0; /* Evita que los canvas de Chart.js rompan el contenedor */
 }
 
 /* Top Header */
@@ -108,9 +139,24 @@ body {
     margin-bottom: 30px;
 }
 
+.header-welcome-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
 .header-welcome h1 {
     font-size: 24px;
-    margin-bottom: 5px;
+    margin: 0 0 5px 0;
 }
 
 .header-welcome p {
@@ -140,16 +186,16 @@ body {
     color: var(--secondary-color);
 }
 
-/* Dashboard Sections */
+/* Dashboard Grid */
 .dashboard-grid {
     display: grid;
     gap: 30px;
 }
 
-/* Stats Cards */
+/* Contenedores de Tarjetas (PC) */
 .stats-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
 
@@ -163,7 +209,7 @@ body {
 .stat-card h2 {
     font-size: 14px;
     color: var(--secondary-color);
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
 }
 
 .stat-value {
@@ -182,15 +228,10 @@ body {
     margin-right: 5px;
 }
 
-.fa-arrow-up {
-    color: var(--green-color);
-}
+.fa-arrow-up { color: var(--green-color); }
+.fa-arrow-down { color: var(--red-color); }
 
-.fa-arrow-down {
-    color: var(--red-color);
-}
-
-/* Charts Section */
+/* Gráficos (PC) */
 .charts-section {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -202,19 +243,20 @@ body {
     border: 1px solid var(--border-color);
     padding: 20px;
     border-radius: 12px;
+    min-width: 0; /* Clave para que Chart.js herede el ancho real responsivo */
 }
 
 .chart-card h2 {
     font-size: 16px;
-    margin-bottom: 20px;
+    margin: 0 0 20px 0;
 }
 
 canvas {
-    width: 100%;
-    height: 200px;
+    width: 100% !important;
+    height: auto !important;
 }
 
-/* Alerts Section */
+/* Alertas (PC) */
 .alerts-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -230,12 +272,13 @@ canvas {
 
 .alert-card h2 {
     font-size: 16px;
-    margin-bottom: 20px;
+    margin: 0 0 20px 0;
 }
 
 .alert-card ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .alert-card ul li {
@@ -245,7 +288,6 @@ canvas {
     align-items: center;
 }
 
-/* Alerts by Location */
 .alert-card .location {
     font-weight: bold;
 }
@@ -266,17 +308,18 @@ canvas {
     left: 0;
 }
 
-/* Recent Alerts */
+/* Recent Alerts (PC) */
 .recent-alerts ul li {
     background-color: #f8fafc;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.case-id {
-    font-weight: bold;
-}
+.case-id { font-weight: bold; }
 
 .priority {
     padding: 5px 10px;
@@ -318,82 +361,266 @@ canvas {
     padding: 20px;
     text-align: center;
     color: var(--secondary-color);
-    position: relative; /* Asegura que el footer se mantenga al final */
-    bottom: 0;
+    box-sizing: border-box;
 }
+
 /* ==========================================
-   ESTILOS RESPONSIVOS (MEDIA QUERIES)
+   ESTILOS RESPONSIVOS MEJORADOS (MEDIA QUERIES)
    ========================================== */
 
-/* Para Tablets (Pantallas menores a 992px) */
-@media (max-width: 992px) {
+   /* ===================================================
+   ESTILOS PARA EL DESPLEGABLE DE PERFIL (DROPDOWN)
+   =================================================== */
+
+/* Contenedor relativo que sirve de ancla para el menú flotante */
+.profile-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Hacemos que el cursor sea de tipo mano al pasar sobre el perfil */
+.profile-info {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.profile-info:hover {
+    background-color: #f1f5f9; /* Sutil feedback al pasar el cursor */
+}
+
+/* Rotación del ícono chevron al abrir el menú */
+#chevronIcon {
+    transition: transform 0.2s ease;
+}
+
+.profile-info.active #chevronIcon {
+    transform: rotate(180deg);
+}
+
+/* El menú flotante oculto por defecto */
+.profile-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px); /* Aparece justo debajo del perfil */
+    right: 0;
+    background-color: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    min-width: 160px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px); /* Pequeño efecto de elevación */
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    z-index: 1000; /* Asegura que se dibuje por encima de los gráficos y tarjetas */
+}
+
+/* Clase para activar y mostrar el menú */
+.profile-dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Estilos de la lista dentro del dropdown */
+.profile-dropdown-menu ul {
+    list-style: none;
+    padding: 6px 0;
+    margin: 0;
+}
+
+.profile-dropdown-menu ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover en la opción de cerrar sesión */
+.profile-dropdown-menu ul li a:hover {
+    background-color: rgba(231, 76, 60, 0.08); /* Fondo rojizo suave */
+    color: var(--red-color); /* Texto en rojo */
+}
+
+.profile-dropdown-menu ul li a i {
+    font-size: 14px;
+    width: 16px;
+    text-align: center;
+}
+
+/* Para Tablets y pantallas medianas (Menores a 1024px) */
+@media (max-width: 1024px) {
+    .stats-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 arriba, 2 abajo */
+    }
+
     .charts-section, 
     .alerts-section {
-        grid-template-columns: 1fr; /* Los gráficos y alertas se apilan uno abajo del otro */
+        grid-template-columns: 1fr; /* Una columna para gráficos y otra para alertas */
     }
 }
 
-/* Para Celulares (Pantallas menores a 768px) */
+/* Para Celulares y pantallas pequeñas (Menores a 768px) */
 @media (max-width: 768px) {
     .main-container {
-        flex-direction: column; /* El contenido principal se va abajo del menú */
+        flex-direction: column; 
     }
 
+    /* Sidecar / Menú Lateral Hamburguesa */
     .sidebar {
-        width: 100%; /* El menú ocupa todo el ancho de la pantalla */
-        box-sizing: border-box;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        padding: 15px;
+        position: fixed;
+        top: 0;
+        left: -260px; 
+        height: 100vh;
+        z-index: 999;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-right: 1px solid var(--border-color);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .hamburger-btn, .close-sidebar-btn {
+        display: block;
     }
 
     .sidebar nav ul {
-        display: flex;
-        flex-wrap: wrap; /* Los botones del menú se acomodan en fila */
-        gap: 10px;
-        justify-content: center;
+        display: block;
+    }
+
+    .sidebar nav ul li {
+        margin-bottom: 8px;
     }
 
     .sidebar nav ul li a {
-        margin-bottom: 0;
-        padding: 8px 12px;
-        font-size: 13px;
+        padding: 12px 16px;
+        font-size: 15px;
     }
 
     .logo-space {
-        margin-bottom: 15px;
-        height: 50px; /* Reducimos un poco el espacio del logo en móvil */
+        margin-bottom: 0; 
     }
 
+    /* Contenido Principal y Header */
     .main-content {
-        padding: 20px; /* Menos espacio en los bordes para aprovechar la pantalla */
+        padding: 15px; /* Menor padding para aprovechar todo el ancho */
     }
 
     .top-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
+        flex-direction: row; 
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
     }
 
-    .header-profile {
-        width: 100%;
-        justify-content: space-between; /* Alinea la campana y el perfil en los extremos */
+    .header-welcome h1 {
+        font-size: 18px; /* Título más prudente para móvil */
     }
 
+    .header-welcome p {
+        font-size: 12px;
+    }
+
+    .header-profile span {
+        display: none; /* Ocultamos el nombre "Administrador" para evitar desbordes */
+    }
+
+    /* ===================================================
+       REAJUSTES DEL CONTENIDO INTERNO PARA MÓVIL
+       =================================================== */
+
+    /* 1. Cuadrícula de Contadores (2x2) */
     .stats-cards {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Tarjetas más pequeñas */
-        gap: 15px;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 12px;
     }
 
     .stat-card {
-        padding: 15px;
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .stat-card h2 {
+        font-size: 12px;
+        margin-bottom: 6px;
     }
 
     .stat-value {
-        font-size: 22px; /* Texto un poco más pequeño para que no se desborde */
+        font-size: 20px; 
+    }
+
+    .stat-change {
+        font-size: 10px;
+        margin-top: 6px;
+    }
+
+    /* 2. Sección de Gráficos */
+    .chart-card {
+        padding: 15px;
+    }
+
+    /* 3. Alertas por Localidad (Sección de barras de progreso) */
+    .alert-card {
+        padding: 15px;
+    }
+
+    .alert-card ul li {
+        flex-wrap: wrap; /* Permite que si el nombre de la localidad es largo, se acomode sin romperse */
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .alert-card .location {
+        font-size: 13px;
+        width: 100%; /* El título de la localidad ocupa toda la línea superior en móvil */
+    }
+
+    .alert-card .count {
+        font-size: 13px;
     }
 
     .progress-bar-container {
-        width: 80px; /* Barra de progreso más corta para que quepa el texto de la localidad */
+        width: 100px; /* Tamaño adaptativo para que quepa junto al número de casos */
+        height: 6px;
+    }
+
+    /* 4. Alertas Recientes (Rediseño de tarjetas a vertical en móvil) */
+    .recent-alerts ul li {
+        flex-direction: column; /* Apilamos la información verticalmente */
+        align-items: flex-start;
+        gap: 6px;
+        padding: 12px;
+        position: relative;
+    }
+
+    .recent-alerts .case-id {
+        font-size: 14px;
+    }
+
+    .recent-alerts .institution {
+        font-size: 13px;
+        color: var(--secondary-color);
+    }
+
+    /* Colocamos la prioridad arriba a la derecha de forma elegante */
+    .recent-alerts .priority {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+
+    .recent-alerts .time {
+        font-size: 11px;
+        margin-top: 2px;
     }
 }

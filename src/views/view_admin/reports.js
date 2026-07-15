@@ -1,129 +1,247 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================================
-    // 1. CAPTURA DE COMPONENTES DEL FORMULARIO Y LA TABLA
+    // 1. BASE DE DATOS ESTRUCTURADA DE REPORTES
     // ==========================================================
-    const selectTipoDoc = document.getElementById('report-type');
-    const inputFechaInicio = document.getElementById('date-start');
-    const inputFechaEnd = document.getElementById('date-end');
-    const selectLocalidad = document.getElementById('filter-locality');
-    const selectIed = document.getElementById('filter-ied');
+    const REPORTS_DATABASE = [
+        {
+            id: "REP-2026-001",
+            school: "IED La Concepción",
+            psychologist: "Dra. Carmen Mendoza",
+            teacher: "Prof. Carlos Ortiz",
+            category: "Acoso Escolar",
+            categoryClass: "acoso",
+            date: "12/07/2026",
+            size: "2.4 MB"
+        },
+        {
+            id: "REP-2026-002",
+            school: "IED Jorge Robledo",
+            psychologist: "Dr. Andrés Ruiz",
+            teacher: "Profa. Marta Martínez",
+            category: "Riesgo Psicosocial",
+            categoryClass: "riesgo",
+            date: "11/07/2026",
+            size: "1.8 MB"
+        },
+        {
+            id: "REP-2026-003",
+            school: "IED San José",
+            psychologist: "Dra. Elena Gómez",
+            teacher: "Prof. Luis Peralta",
+            category: "Deserción / Ausentismo",
+            categoryClass: "desercion",
+            date: "09/07/2026",
+            size: "950 KB"
+        },
+        {
+            id: "REP-2026-004",
+            school: "IED La Concepción",
+            psychologist: "Dra. Carmen Mendoza",
+            teacher: "Prof. Luis Peralta",
+            category: "Riesgo Psicosocial",
+            categoryClass: "riesgo",
+            date: "05/07/2026",
+            size: "3.1 MB"
+        },
+        {
+            id: "REP-2026-005",
+            school: "IED Jorge Robledo",
+            psychologist: "Dra. Elena Gómez",
+            teacher: "Prof. Carlos Ortiz",
+            category: "Acoso Escolar",
+            categoryClass: "acoso",
+            date: "28/06/2026",
+            size: "1.2 MB"
+        }
+    ];
 
-    const btnPdf = document.querySelector('.btn-pdf');
-    const btnExcel = document.querySelector('.btn-excel');
-    const btnProgramar = document.querySelector('.btn-secondary-action');
-    const tablaCuerpo = document.querySelector('table tbody');
+    // Elementos de filtrado del DOM
+    const searchGeneral = document.getElementById('searchGeneral');
+    const filterInstitution = document.getElementById('filterInstitution');
+    const filterPsychologist = document.getElementById('filterPsychologist');
+    const filterTeacher = document.getElementById('filterTeacher');
+    
+    // Tabla y contadores
+    const reportsTableBody = document.getElementById('reportsTableBody');
+    const resultsCount = document.getElementById('resultsCount');
+
+    // Elementos del Modal Visor PDF
+    const pdfModal = document.getElementById('pdfModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const btnCancelModal = document.getElementById('btnCancelModal');
+    const btnDownloadFromModal = document.getElementById('btnDownloadFromModal');
+    
+    const pdfModalTitle = document.getElementById('pdfModalTitle');
+    const pdfMetaCode = document.getElementById('pdfMetaCode');
+    const pdfMetaDate = document.getElementById('pdfMetaDate');
+    const pdfViewSchool = document.getElementById('pdfViewSchool');
+    const pdfViewPsych = document.getElementById('pdfViewPsych');
+    const pdfViewTeacher = document.getElementById('pdfViewTeacher');
+    const pdfViewCategory = document.getElementById('pdfViewCategory');
+
+    // Interfaz general y Responsive
+    const profileDropdownBtn = document.getElementById('profileDropdownBtn');
+    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const sidebarMenu = document.getElementById('sidebarMenu');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    let activeReportForDownload = null;
 
     // ==========================================================
-    // 2. FUNCIÓN PARA DISPARAR LA GENERACIÓN DE UN DOCUMENTO
+    // 2. FUNCIÓN DE RENDERIZADO Y FILTRADO COMBINADO
     // ==========================================================
-    function generarReporte(formato) {
-        // Capturamos los valores seleccionados en tiempo real
-        const tipoTexto = selectTipoDoc.options[selectTipoDoc.selectedIndex].text;
-        const localidadText = selectLocalidad.options[selectLocalidad.selectedIndex].text;
-        const iedText = selectIed.options[selectIed.selectedIndex].text;
-        
-        // Validamos que las fechas tengan consistencia básica
-        if (!inputFechaInicio.value || !inputFechaEnd.value) {
-            alert("⚠️ Por favor, selecciona un rango de fechas válido.");
+    function renderReports() {
+        const query = searchGeneral.value.toLowerCase().trim();
+        const instFilter = filterInstitution.value;
+        const psychFilter = filterPsychologist.value;
+        const teacherFilter = filterTeacher.value;
+
+        // Filtrar elementos de la colección
+        const filteredReports = REPORTS_DATABASE.filter(report => {
+            const matchesQuery = report.id.toLowerCase().includes(query) || 
+                                 report.category.toLowerCase().includes(query);
+            
+            const matchesInst = (instFilter === "Todos" || report.school === instFilter);
+            const matchesPsych = (psychFilter === "Todos" || report.psychologist === psychFilter);
+            const matchesTeacher = (teacherFilter === "Todos" || report.teacher === teacherFilter);
+
+            return matchesQuery && matchesInst && matchesPsych && matchesTeacher;
+        });
+
+        // Actualizar contador visual superior
+        resultsCount.innerText = `Mostrando ${filteredReports.length} reporte${filteredReports.length === 1 ? '' : 's'}`;
+
+        // Limpiar cuerpo de la tabla
+        reportsTableBody.innerHTML = '';
+
+        if (filteredReports.length === 0) {
+            reportsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--secondary-color); padding: 30px;">No se encontraron reportes con los filtros seleccionados.</td></tr>`;
             return;
         }
 
-        // Animación visual simulando la carga del procesamiento
-        const botonActivo = formato === 'pdf' ? btnPdf : btnExcel;
-        const iconoOriginal = botonActivo.innerHTML;
-        botonActivo.disabled = true;
-        botonActivo.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Procesando...`;
-
-        setTimeout(() => {
-            // Restauramos el botón
-            botonActivo.disabled = false;
-            botonActivo.innerHTML = iconoOriginal;
-
-            // Creamos un nombre de archivo ficticio limpio basado en el formato y la selección
-            const timestamp = Math.floor(Date.now() / 100000);
-            const ext = formato === 'pdf' ? 'pdf' : 'xlsx';
-            const iconClass = formato === 'pdf' ? 'fa-file-pdf file-icon-pdf' : 'fa-file-excel file-icon-excel';
-            const nombreArchivo = `rep_${selectTipoDoc.value}_${timestamp}.${ext}`;
-
-            // Obtenemos la fecha y hora actual formateada en tiempo real
-            const ahora = new Date();
-            const fechaFormateada = `${ahora.getDate().toString().padStart(2, '0')}/${(ahora.getMonth() + 1).toString().padStart(2, '0')}/${ahora.getFullYear()} - ${ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-
-            // --- INSERCIÓN DINÁMICA DE LA NUEVA FILA EN LA TABLA ---
-            const nuevaFila = document.createElement('tr');
-            nuevaFila.innerHTML = `
-                <td>${fechaFormateada}</td>
-                <td><i class="fa-solid ${iconClass}"></i> <code>${nombreArchivo}</code></td>
-                <td>${tipoTexto.split('(')[0].trim()}</td>
-                <td>Admin_Sistemas</td>
-                <td>${(Math.random() * (3.5 - 0.5) + 0.5).toFixed(1)} MB</td>
-                <td><button class="btn-table-download"><i class="fa-solid fa-cloud-arrow-down"></i> Bajar</button></td>
+        // Construir filas idénticas al estilo limpio de usuarios
+        filteredReports.forEach(report => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <div class="doc-name">
+                        <div class="doc-icon-wrapper"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="doc-info-meta">
+                            <span class="doc-code">${report.id}</span>
+                            <span class="doc-size">Tamaño: ${report.size}</span>
+                        </div>
+                    </div>
+                </td>
+                <td><strong>${report.school}</strong><br><small style="color:var(--secondary-color)">Distrito Barranquilla</small></td>
+                <td>
+                    <div class="people-stack">
+                        <span><i class="fa-solid fa-user-doctor" style="font-size:11px; color:var(--primary-color)"></i> ${report.psychologist}</span>
+                        <small><i class="fa-solid fa-chalkboard-user" style="font-size:10px"></i> Retoma: ${report.teacher}</small>
+                    </div>
+                </td>
+                <td><span class="badge-category ${report.categoryClass}">${report.category}</span></td>
+                <td>${report.date}</td>
+                <td>
+                    <div class="actions-cell">
+                        <button class="btn-view-pdf" data-id="${report.id}"><i class="fa-solid fa-eye"></i> Ver PDF</button>
+                        <button class="btn-download-pdf" data-id="${report.id}"><i class="fa-solid fa-download"></i> Bajar</button>
+                    </div>
+                </td>
             `;
+            reportsTableBody.appendChild(tr);
+        });
 
-            // Insertamos la nueva descarga al principio de la tabla (arriba de las anteriores)
-            if (tablaCuerpo) {
-                tablaCuerpo.insertBefore(nuevaFila, tablaCuerpo.firstChild);
-            }
+        // Adjuntar eventos a los botones recién creados en la lista
+        document.querySelectorAll('.btn-view-pdf').forEach(btn => {
+            btn.addEventListener('click', () => openPDFViewer(btn.getAttribute('data-id')));
+        });
 
-            alert(`🚀 ¡Reporte Generado con éxito!\nFiltros aplicados:\n📍 Zona: ${localidadText}\n🏫 Sede: ${iedText}\nEl documento se ha indexado en el historial de auditoría.`);
-        }, 1500); // 1.5 segundos de retraso para dar sensación de carga real
-    }
-
-    // Escuchadores de los botones de exportación
-    if (btnPdf) btnPdf.addEventListener('click', () => generarReporte('pdf'));
-    if (btnExcel) btnExcel.addEventListener('click', () => generarReporte('excel'));
-
-
-    // ==========================================================
-    // 3. LOGICA PARA AGREGAR REPORTES AUTOMATIZADOS (PROGRAMACIÓN)
-    // ==========================================================
-    if (btnProgramar) {
-        btnProgramar.addEventListener('click', () => {
-            const titulo = prompt("Ingresa el título de la nueva alerta automatizada:");
-            if (!titulo) return;
-
-            const correo = prompt("Ingresa el correo institucional destino:");
-            if (!correo || !correo.includes('@')) {
-                alert("❌ Correo inválido o proceso cancelado.");
-                return;
-            }
-
-            // Capturamos el contenedor de la lista de envíos automáticos
-            const contenedorLista = document.querySelector('.schedule-list');
-            
-            if (contenedorLista) {
-                const nuevoItem = document.createElement('div');
-                nuevoItem.className = 'schedule-item'; // Clase de estilo de tu bloque CSS
-                nuevoItem.innerHTML = `
-                    <div class="schedule-info">
-                        <h4>${titulo}</h4>
-                        <p>Frecuencia: <span class="badge">Cada Mes (Día 1) 7:00 AM</span></p>
-                        <p class="destinatary">Para: ${correo}</p>
-                    </div>
-                    <div class="schedule-toggle">
-                        <span class="status-dot online"></span> Activo
-                    </div>
-                `;
-                contenedorLista.appendChild(nuevoItem);
-                alert(`⏰ Se ha configurado una tarea cronometrada para enviar automáticamente: "${titulo}" al correo ${correo}.`);
-            }
+        document.querySelectorAll('.btn-download-pdf').forEach(btn => {
+            btn.addEventListener('click', () => triggerDownload(btn.getAttribute('data-id')));
         });
     }
 
-
     // ==========================================================
-    // 4. LÓGICA DE BOTONES "BAJAR" EN EL HISTORIAL (Delegación)
+    // 3. LOGICA DEL VISOR MODAL Y DESCARGAS
     // ==========================================================
-    if (tablaCuerpo) {
-        tablaCuerpo.addEventListener('click', (event) => {
-            const boton = event.target.closest('.btn-table-download');
-            if (!boton) return;
+    function openPDFViewer(id) {
+        const report = REPORTS_DATABASE.find(r => r.id === id);
+        if (!report) return;
 
-            const fila = boton.closest('tr');
-            const nombreArchivo = fila.querySelector('code').innerText;
+        activeReportForDownload = report;
 
-            alert(`📥 Iniciando la descarga directa del servidor para el archivo comprimido:\n[ ${nombreArchivo} ]`);
-        });
+        // Inyectar metadatos en la hoja simulada del PDF
+        pdfModalTitle.innerHTML = `<i class="fa-solid fa-file-pdf" style="color: #e74c3c; margin-right: 8px;"></i> Visor: ${report.id}`;
+        pdfMetaCode.innerText = report.id;
+        pdfMetaDate.innerText = report.date;
+        pdfViewSchool.innerText = report.school;
+        pdfViewPsych.innerText = report.psychologist;
+        pdfViewTeacher.innerText = report.teacher;
+        pdfViewCategory.innerText = report.category;
+
+        pdfModal.classList.add('show');
     }
+
+    function closePDFViewer() {
+        pdfModal.classList.remove('show');
+        activeReportForDownload = null;
+    }
+
+    function triggerDownload(id) {
+        const report = REPORTS_DATABASE.find(r => r.id === id);
+        if (!report) return;
+        
+        alert(`Iniciando descarga del archivo oficial:\n[${report.id}.pdf] (${report.size})\nGuardado exitosamente en tu dispositivo.`);
+    }
+
+    // Escuchadores del Modal
+    closeModalBtn.addEventListener('click', closePDFViewer);
+    btnCancelModal.addEventListener('click', closePDFViewer);
+    btnDownloadFromModal.addEventListener('click', () => {
+        if (activeReportForDownload) {
+            triggerDownload(activeReportForDownload.id);
+            closePDFViewer();
+        }
+    });
+
+    // Escuchadores de filtros en tiempo real
+    searchGeneral.addEventListener('input', renderReports);
+    filterInstitution.addEventListener('change', renderReports);
+    filterPsychologist.addEventListener('change', renderReports);
+    filterTeacher.addEventListener('change', renderReports);
+
+    // ==========================================================
+    // 4. ELEMENTOS DE CONTROL GLOBAL (Perfil y Hamburguesa)
+    // ==========================================================
+    profileDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdownMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', () => {
+        profileDropdownMenu.classList.remove('show');
+    });
+
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if(confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+            window.location.href = "/src/views/aut/login.html"; 
+        }
+    });
+
+    mobileNavToggle.addEventListener('click', () => {
+        sidebarMenu.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+
+    sidebarOverlay.addEventListener('click', () => {
+        sidebarMenu.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
+
+    // Inicialización por defecto
+    renderReports();
 });
