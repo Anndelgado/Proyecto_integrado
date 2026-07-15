@@ -52,3 +52,21 @@ actualizar una alerta existente.
 
 ### DELETE /api/v1/alerts/:id
 eleminar una alerta existente.
+
+
+## API Response Format
+
+### Success
+
+{
+    "Success": true,
+    "message": "Operation Completed Successfully.",
+    "data": {}
+}
+
+### Error
+
+{
+    "Success": false,
+    "message": "Description of error"
+}
