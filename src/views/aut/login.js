@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const usuariosSimulados = [
         { email: 'admin@barranquilla.gov.co', pass: 'admin123', rol: 'admin', ruta: '../view_admin/index.html' },
         { email: 'orientador@concepcion.edu.co', pass: 'psico123', rol: 'psicologo', ruta: '../view_psicologo/index.html' }, 
-        { email: 'docente@robledo.edu.co', pass: 'profe123', rol: 'docente', ruta: '../view_docente/index.html' }
+        { email: 'docente@robledo.edu.co', pass: 'profe123', rol: 'docente', ruta: '../view_teacher/index.html' }
     ];
 
     // 3. EVENTO DE INICIO DE SESIÓN

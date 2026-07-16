@@ -1,0 +1,54 @@
+/* ==========================================================================
+   AJUSTES RESPONSIVOS ADICIONALES (MENÚ HAMBURGUESA MÓVIL)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* Mostrar botón hamburguesa */
+    .menu-toggle-btn {
+        display: block;
+    }
+
+    /* Modificar Sidebar para ser flotante izquierdo oculto */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -260px;
+        height: 100vh;
+        z-index: 3000;
+        transition: left 0.3s ease;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+    }
+
+    /* Clase activa para mostrar el menú lateral */
+    .sidebar.open {
+        left: 0;
+    }
+
+    /* Capa oscura activa */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.4);
+        display: none;
+        z-index: 2500;
+    }
+    
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+    .close-sidebar-btn {
+        display: block !important;
+        margin-left: auto;
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: #64748b;
+        cursor: pointer;
+    }
+}
+
+/* Regla por defecto para ocultar la equis del menú en escritorio */
+.close-sidebar-btn {
+    display: none;
+}
