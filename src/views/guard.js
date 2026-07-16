@@ -4,7 +4,6 @@
  */
 (function () {
     // 1. VERIFICAR SI EXISTE UNA SESIÓN ACTIVA
-    // Leemos el objeto único de sesión que guardaste en el login
     const sessionUser = JSON.parse(sessionStorage.getItem('session_user'));
 
     // Si no hay sesión, el usuario no se ha logueado. Lo expulsamos al login inmediatamente.

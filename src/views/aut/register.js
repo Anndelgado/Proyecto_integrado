@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // FILTRO 1: VALIDAR EL CÓDIGO DE LA INSTITUCIÓN
                 // ========================================================
                 if (!COLEGIOS_VALIDOS.includes(codigoIngresado)) {
-                    alert("❌ Código de institución inválido. Esta escuela no está registrada en el programa de salud mental.");
+                    alert("Código de institución inválido. Esta escuela no está registrada en el programa de salud mental.");
                     restaurarBoton();
                     return;
                 }

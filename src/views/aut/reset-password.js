@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const formReset = document.getElementById('reset-form');
     const inputNewPassword = document.getElementById('new-password');
+    const btnReset = document.getElementById('btn-reset');
 
-    // Capturar el token de la URL automáticamente
+    // 1. CAPTURAR EL TOKEN DE LA URL AUTOMÁTICAMENTE
     const parametrosURL = new URLSearchParams(window.location.search);
     const tokenURL = parametrosURL.get('token');
 
-    // Bloqueo inmediato si entran sin token en la URL
+    // Bloqueo inmediato si entran de forma directa sin un token válido
     if (!tokenURL) {
         alert("Acceso inválido. Falta el token de seguridad o el enlace está incompleto.");
         window.location.href = './login.html';
@@ -24,32 +25,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            let usuarios = JSON.parse(localStorage.getItem('usuarios_sistema')) || [];
-            const usuarioEncontrado = usuarios.find(user => user.resetToken === tokenURL);
+            if (btnReset) {
+                btnReset.disabled = true;
+                btnReset.innerText = "Actualizando...";
+            }
 
-            // Validar si el token existe en el almacenamiento
-            if (!usuarioEncontrado) {
+            // 2. LEER LA BASE DE DATOS COMPARTIDA
+            let usuarios = JSON.parse(localStorage.getItem('usuarios_sistema')) || [];
+
+            // 3. ENCONTRAR LA POSICIÓN EXACTA DEL USUARIO DUEÑO DEL TOKEN
+            const usuarioIndex = usuarios.findIndex(user => user.resetToken === tokenURL);
+
+            // Validar si el token existe
+            if (usuarioIndex === -1) {
                 alert("El enlace de recuperación es inválido o ya fue utilizado anteriormente.");
                 window.location.href = './login.html';
                 return;
             }
 
-            // Validar si el token ya expiró por tiempo
-            if (Date.now() > usuarioEncontrado.resetTokenExpires) {
-                alert("El enlace de recuperación ha expirado tras 15 minutos. Solicite uno nuevo.");
+            // Validar si el token ya expiró (Límite: 15 minutos)
+            if (Date.now() > usuarios[usuarioIndex].resetTokenExpires) {
+                alert("⏰ El enlace de recuperación ha expirado. Por favor, solicite uno nuevo.");
                 window.location.href = './forgot-password.html';
                 return;
             }
 
-            // Actualizar la contraseña en formato Base64 y limpiar tokens usados
-            usuarioEncontrado.pass = btoa(nuevaPassword);
-            delete usuarioEncontrado.resetToken;
-            delete usuarioEncontrado.resetTokenExpires;
+            // Cambiamos la contraseña convirtiéndola a Base64
+            usuarios[usuarioIndex].pass = btoa(nuevaPassword); 
+            
+            // Borramos las variables temporales de auditoría para cerrar el ciclo
+            delete usuarios[usuarioIndex].resetToken;
+            delete usuarios[usuarioIndex].resetTokenExpires;
 
             localStorage.setItem('usuarios_sistema', JSON.stringify(usuarios));
 
-            // Alerta nativa de éxito total
             alert("¡Contraseña actualizada con éxito!\nYa puede iniciar sesión con sus nuevas credenciales.");
+            
+            // Redirigir de inmediato al Login para usar la nueva clave
             window.location.href = './login.html';
         });
     }
