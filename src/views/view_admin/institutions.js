@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="actions-btn-group">
                         <button class="btn-action edit-btn" data-index="${index}" title="Editar Institución"><i class="fa-solid fa-pen"></i></button>
                         <button class="btn-action rapid-assign ${isUnassignedClass}" data-index="${index}" title="Asignar Psicóloga / Rector"><i class="fa-solid fa-user-gear"></i></button>
-                        <button class="btn-action view-details" data-name="${inst.name}" title="Ver Ficha Detallada"><i class="fa-solid fa-eye"></i></button>
                     </div>
                 </td>
             `;
