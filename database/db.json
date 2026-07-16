@@ -1,0 +1,239 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "nombre": "Administrador",
+      "apellido": "Distrital",
+      "documento": "1000000000",
+      "correo": "admin@baq.com",
+      "telefono": "3000000000",
+      "password": "admin123",
+      "rol": "admin",
+      "institucionId": null,
+      "cursoId": null,
+      "estado": "activo",
+      "fechaRegistro": "2026-07-11"
+    },
+    {
+      "id": 2,
+      "nombre": "Andrés",
+      "apellido": "Duarte",
+      "documento": "1122334455",
+      "correo": "andres.duarte@baq.com",
+      "telefono": "3012345678",
+      "password": "estudiante123",
+      "rol": "estudiante",
+      "institucionId": 1,
+      "cursoId": 1,
+      "estado": "activo",
+      "fechaRegistro": "2026-07-11"
+    },
+    {
+      "id": 3,
+      "nombre": "María",
+      "apellido": "González",
+      "documento": "1098765432",
+      "correo": "maria.gonzalez@baq.com",
+      "telefono": "3009876543",
+      "password": "docente123",
+      "rol": "docente",
+      "institucionId": 1,
+      "cursoId": null,
+      "estado": "activo",
+      "fechaRegistro": "2026-07-11"
+    },
+    {
+      "id": 4,
+      "nombre": "Laura",
+      "apellido": "Ramírez",
+      "documento": "1054789632",
+      "correo": "laura.ramirez@baq.com",
+      "telefono": "3021234567",
+      "password": "orientador123",
+      "rol": "orientador",
+      "institucionId": 1,
+      "cursoId": null,
+      "estado": "activo",
+      "fechaRegistro": "2026-07-11"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "nombre": "admin"
+    },
+    {
+      "id": 2,
+      "nombre": "orientador"
+    },
+    {
+      "id": 3,
+      "nombre": "docente"
+    },
+    {
+      "id": 4,
+      "nombre": "estudiante"
+    }
+  ],
+  "instituciones": [
+    {
+      "id": 1,
+      "codigo": "IED-4521",
+      "nombre": "IED La Concepción",
+      "direccion": "Cra. 43 #80-15",
+      "localidad": "Riomar",
+      "telefono": "3850000"
+    },
+    {
+      "id": 2,
+      "codigo": "IED-7845",
+      "nombre": "IED Jorge Robledo",
+      "direccion": "Calle 72 #12-20",
+      "localidad": "Suroriente",
+      "telefono": "3850010"
+    },
+    {
+      "id": 3,
+      "codigo": "IED-9548",
+      "nombre": "IED San José",
+      "direccion": "Carrera 38 #45-10",
+      "localidad": "Norte-Centro Histórico",
+      "telefono": "3850020"
+    }
+  ],
+  "cursos": [
+    {
+      "id": 1,
+      "nombre": "9°A",
+      "institucionId": 1
+    },
+    {
+      "id": 2,
+      "nombre": "9°B",
+      "institucionId": 1
+    },
+    {
+      "id": 3,
+      "nombre": "10°A",
+      "institucionId": 2
+    },
+    {
+      "id": 4,
+      "nombre": "11°A",
+      "institucionId": 3
+    }
+  ],
+  "alertas": [
+    {
+      "id": 1256,
+      "estudianteId": 2,
+      "institucionId": 1,
+      "cursoId": 1,
+      "nivelRiesgo": "alto",
+      "descripcion": "Cambios frecuentes en el comportamiento y aislamiento social.",
+      "estado": "pendiente",
+      "fecha": "2026-07-11"
+    }
+  ],
+  "seguimientos": [
+    {
+      "id": 1,
+      "alertaId": 1256,
+      "usuarioId": 4,
+      "comentario": "Se realizó entrevista inicial con el estudiante.",
+      "fecha": "2026-07-12"
+    }
+  ],
+  "notificaciones": [
+    {
+      "id": 1,
+      "usuarioId": 2,
+      "titulo": "Nueva alerta registrada",
+      "mensaje": "Se ha registrado una alerta asociada a tu caso y será atendida por el orientador.",
+      "leida": true,
+      "fecha": "2026-07-12"
+    }
+  ],
+  "tests": [
+    {
+      "id": 1,
+      "nombre": "Cuestionario de Bienestar Emocional",
+      "descripcion": "Evalúa tu estado emocional general en la última semana.",
+      "icon": "face-smile",
+      "color": "blue",
+      "duracionMin": 5,
+      "numPreguntas": 10
+    },
+    {
+      "id": 2,
+      "nombre": "Escala de Convivencia Escolar",
+      "descripcion": "Mide cómo percibes el ambiente y las relaciones en tu colegio.",
+      "icon": "people-group",
+      "color": "yellow",
+      "duracionMin": 7,
+      "numPreguntas": 12
+    },
+    {
+      "id": 3,
+      "nombre": "Test de Ansiedad",
+      "descripcion": "Identifica señales de ansiedad y aprende a manejarlas.",
+      "icon": "brain",
+      "color": "red",
+      "duracionMin": 5,
+      "numPreguntas": 8
+    },
+    {
+      "id": 4,
+      "nombre": "Test de Autoestima",
+      "descripcion": "Descubre cómo te sientes contigo mismo.",
+      "icon": "star",
+      "color": "green",
+      "duracionMin": 5,
+      "numPreguntas": 8
+    }
+  ],
+  "asignaciones": [
+    {
+      "id": 1,
+      "testId": 1,
+      "estudianteId": 2,
+      "docenteId": 3,
+      "institucionId": 1,
+      "cursoId": 1,
+      "fecha": "2026-07-10",
+      "estado": "completado"
+    },
+    {
+      "id": 2,
+      "testId": 2,
+      "estudianteId": 2,
+      "docenteId": 3,
+      "institucionId": 1,
+      "cursoId": 1,
+      "fecha": "2026-07-13",
+      "estado": "pendiente"
+    },
+    {
+      "id": 3,
+      "testId": 3,
+      "estudianteId": 2,
+      "docenteId": 3,
+      "institucionId": 1,
+      "cursoId": 1,
+      "fecha": "2026-07-14",
+      "estado": "pendiente"
+    }
+  ],
+  "resultados": [
+    {
+      "id": 1,
+      "asignacionId": 1,
+      "testId": 1,
+      "estudianteId": 2,
+      "fecha": "2026-07-11",
+      "puntaje": 78,
+      "nivel": "estable",
+      "interpretacion": "Tu estado emocional se muestra estable, con buen manejo de tus emociones esta semana."
+    }
+  ]
+}

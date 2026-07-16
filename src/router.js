@@ -1,0 +1,211 @@
+// ======================================================
+// router.js
+// Barranquilla Convive
+// ======================================================
+//
+// Router ligero basado en la History API (pushState). Las URLs se ven
+// limpias, sin "#" (ej: "/admin", "/psicologo/casos/1256").
+//
+// Soporta:
+//   - Parámetros dinámicos:      "/psicologo/casos/:id"
+//   - Rutas privadas:            { private: true }
+//   - Rutas restringidas por rol { roles: ["admin"] }
+//   - Rutas solo para invitados: { guestOnly: true } (ej: /login)
+//
+// Nota para producción: al usar URLs "limpias", el servidor debe
+// redirigir cualquier ruta desconocida hacia "index.html" para que el
+// router de React... digo, el nuestro, pueda tomar el control (ver
+// public/_redirects para Netlify, o el equivalente en tu hosting).
+// `vite dev` y `vite preview` ya hacen esto automáticamente.
+//
+// ======================================================
+
+import { getSession } from "./session.js";
+import { normalizeRole, getHomePath } from "./components/layout/navigation.js";
+
+const routes = [];
+let currentParams = {};
+
+//======================================================
+// Registro de rutas
+//======================================================
+
+/**
+ * Registra una ruta.
+ *
+ * @param {string} path - Ej: "/", "/admin", "/psicologo/casos/:id"
+ * @param {Function} renderFn - Devuelve (o resuelve con) un HTMLElement
+ * @param {Object} options
+ * @param {boolean} options.private   - Requiere sesión activa
+ * @param {string[]} options.roles    - Roles permitidos (implica private)
+ * @param {boolean} options.guestOnly - Solo accesible sin sesión activa
+ */
+export function registerRoute(path, renderFn, options = {}) {
+  routes.push({
+    path,
+    renderFn,
+    paramNames: extractParamNames(path),
+    pattern: toRegExp(path),
+    private: Boolean(options.private || options.roles?.length),
+    roles: options.roles ?? null,
+    guestOnly: Boolean(options.guestOnly),
+  });
+}
+
+function extractParamNames(path) {
+  return (path.match(/:[^/]+/g) || []).map((token) => token.slice(1));
+}
+
+function toRegExp(path) {
+  const pattern = path
+    .replace(/[.+*?^${}()|[\]\\]/g, "\\$&") // escapa símbolos regex reservados (":" queda intacto)
+    .replace(/:[^/]+/g, "([^/]+)"); // reemplaza :param -> grupo de captura
+
+  return new RegExp(`^${pattern}$`);
+}
+
+function matchRoute(path) {
+  for (const route of routes) {
+    const match = path.match(route.pattern);
+    if (!match) continue;
+
+    const params = {};
+    route.paramNames.forEach((name, index) => {
+      params[name] = decodeURIComponent(match[index + 1]);
+    });
+
+    return { route, params };
+  }
+  return null;
+}
+
+//======================================================
+// Navegación
+//======================================================
+
+/**
+ * Navega a `path` usando la History API (sin recargar la página y
+ * sin dejar rastro de "#" en la URL).
+ */
+export function navigate(path) {
+  if (window.location.pathname === path) {
+    render();
+  } else {
+    window.history.pushState(null, "", path);
+    render();
+  }
+}
+
+/** Parámetros de la ruta actualmente renderizada (ej: { id: "1256" }). */
+export function getParams() {
+  return currentParams;
+}
+
+function currentPath() {
+  return window.location.pathname || "/";
+}
+
+//======================================================
+// Guardas de acceso
+//======================================================
+
+/**
+ * Decide si una ruta puede renderizarse con la sesión activa.
+ * Devuelve `null` si el acceso está permitido, o la ruta a la que
+ * se debe redirigir en caso contrario.
+ */
+function resolveAccess(route, session) {
+  if (route.guestOnly && session) {
+    return getHomePath(session.rol);
+  }
+
+  if (route.private && !session) {
+    return "/login";
+  }
+
+  if (route.roles && session) {
+    const allowed = route.roles.map(normalizeRole);
+    if (!allowed.includes(normalizeRole(session.rol))) {
+      return getHomePath(session.rol);
+    }
+  }
+
+  return null;
+}
+
+//======================================================
+// Render
+//======================================================
+
+async function render() {
+  const path = currentPath();
+  const session = getSession();
+
+  const matched = matchRoute(path);
+
+  if (!matched) {
+    return renderNotFound();
+  }
+
+  const redirectTo = resolveAccess(matched.route, session);
+
+  if (redirectTo) {
+    return navigate(redirectTo);
+  }
+
+  currentParams = matched.params;
+
+  await mount(matched.route.renderFn);
+}
+
+async function renderNotFound() {
+  const notFound = routes.find((route) => route.path === "/404");
+  if (!notFound) return;
+
+  currentParams = {};
+  await mount(notFound.renderFn);
+}
+
+async function mount(renderFn) {
+  const app = document.getElementById("app");
+
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+
+  const view = await renderFn();
+
+  app.innerHTML = "";
+  app.appendChild(view);
+}
+
+//======================================================
+// Ciclo de vida
+//======================================================
+
+export function startRouter() {
+  // "popstate" se dispara con los botones atrás/adelante del navegador.
+  window.addEventListener("popstate", render);
+  window.addEventListener("DOMContentLoaded", render);
+  if (document.readyState !== "loading") render();
+}
+
+//======================================================
+// Delegación global de clicks
+//======================================================
+//
+// Intercepta los <a href="/ruta" data-link> para navegar sin recargar
+// la página. Los enlaces normales (externos, con target="_blank", o
+// con Ctrl/Cmd/Shift/click central) se dejan al comportamiento nativo
+// del navegador.
+
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("[data-link]");
+  if (!link) return;
+
+  const isModifiedClick =
+    e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
+
+  if (isModifiedClick || link.target === "_blank") return;
+
+  e.preventDefault();
+  navigate(link.getAttribute("href"));
+});
