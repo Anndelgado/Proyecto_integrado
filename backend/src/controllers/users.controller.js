@@ -1,9 +1,19 @@
 import {getAllUsers} from "../services/users.service.js";
 
-export const getUsers = async (req, res) =>
-{
+export const getUsers = async (req, res) =>{
     const user = await getAllUsers();
-    res.json(user);
+    if(user){
+        res.status(200).json({
+            Success: true,
+            message: "Users found",
+            data: user
+
+        })
+    }else{
+        res.status(404).json({
+            Success: false,
+            message: "Users not found"
+    })}
 };
 
 export const getUserById = async (req, res) => 
