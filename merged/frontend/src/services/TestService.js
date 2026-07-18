@@ -1,0 +1,203 @@
+// ======================================================
+// TestService.js
+// Barranquilla Convive
+// ======================================================
+//
+// El catálogo de test psicosociales (preguntas, opciones) vive aquí
+// como datos estáticos porque no existe una tabla "tests" en el
+// backend (son fijos, no los edita nadie desde la app).
+//
+// Los RESULTADOS sí se persisten contra el backend real, en la tabla
+// "testResultados" (Postgres), igual que hacen las habilitaciones y
+// resultados de tamizaje en TamizajeService.js.
+//
+// ======================================================
+
+const RESULTADOS_URL = "/api/testResultados";
+
+const CATALOGO_TESTS = [
+
+    {
+        id: "ansiedad",
+        nombre: "Test de Ansiedad",
+        descripcion: "Evalúa tus niveles de ansiedad en el día a día.",
+        icon: "brain",
+        color: "blue",
+        invertido: false, // a mayor puntaje, mayor riesgo
+        preguntas: [
+            "Me siento nervioso/a o inquieto/a con frecuencia.",
+            "Me cuesta relajarme, incluso en mi tiempo libre.",
+            "Me preocupo demasiado por diferentes situaciones.",
+            "Siento tensión muscular o me siento agotado/a sin razón aparente.",
+            "Tengo dificultad para concentrarme por estar preocupado/a."
+        ]
+    },
+
+    {
+        id: "estres",
+        nombre: "Test de Estrés",
+        descripcion: "Mide tu nivel de estrés académico y personal.",
+        icon: "bolt",
+        color: "yellow",
+        invertido: false,
+        preguntas: [
+            "Siento que tengo más responsabilidades de las que puedo manejar.",
+            "Me cuesta dormir por pensar en mis pendientes.",
+            "Me siento irritable o de mal humor con facilidad.",
+            "Siento que el tiempo no me alcanza para todo lo que debo hacer.",
+            "Experimento dolores de cabeza o malestar físico con frecuencia."
+        ]
+    },
+
+    {
+        id: "autoestima",
+        nombre: "Test de Autoestima",
+        descripcion: "Descubre cómo te sientes contigo mismo/a.",
+        icon: "star",
+        color: "green",
+        invertido: true, // a mayor puntaje, mejor autoestima
+        preguntas: [
+            "En general, estoy satisfecho/a conmigo mismo/a.",
+            "Siento que tengo cualidades buenas.",
+            "Soy capaz de hacer las cosas tan bien como la mayoría de las personas.",
+            "Tengo una actitud positiva hacia mí mismo/a.",
+            "Me siento una persona valiosa, al menos en igual medida que los demás."
+        ]
+    }
+
+];
+
+const OPCIONES = [
+    { texto: "Nunca", valor: 0 },
+    { texto: "A veces", valor: 1 },
+    { texto: "Frecuentemente", valor: 2 },
+    { texto: "Siempre", valor: 3 }
+];
+
+//======================================================
+// Catálogo
+//======================================================
+
+export function getCatalogoTests() {
+    return CATALOGO_TESTS;
+}
+
+export function getOpciones() {
+    return OPCIONES;
+}
+
+//======================================================
+// Resultados (persistidos en Postgres vía /api/testResultados)
+//======================================================
+
+export async function getResultados(estudianteId) {
+
+    const response = await fetch(
+        `${RESULTADOS_URL}?estudianteId=${encodeURIComponent(estudianteId)}&_sort=fecha&_order=desc`
+    );
+
+    if (!response.ok) {
+
+        throw new Error("Error obteniendo tus resultados de test.");
+
+    }
+
+    return await response.json();
+
+}
+
+export async function haCompletadoHoy(estudianteId, testId) {
+
+    const hoy = new Date().toISOString().slice(0, 10);
+
+    const resultados = await getResultados(estudianteId);
+
+    return resultados.some(
+        r => r.testId === testId && r.fecha === hoy
+    );
+
+}
+
+export async function guardarResultado({ estudianteId, test, respuestas }) {
+
+    const puntajeMax = test.preguntas.length * 3;
+
+    const puntaje = respuestas.reduce((suma, valor) => suma + valor, 0);
+
+    const porcentaje = Math.round((puntaje / puntajeMax) * 100);
+
+    const nivel = calcularNivel(porcentaje, test.invertido);
+
+    const payload = {
+
+        estudianteId,
+
+        testId: test.id,
+
+        testNombre: test.nombre,
+
+        icon: test.icon,
+
+        color: test.color,
+
+        fecha: new Date().toISOString().slice(0, 10),
+
+        puntaje,
+
+        puntajeMax,
+
+        porcentaje,
+
+        nivel: nivel.nombre,
+
+        variant: nivel.variant
+
+    };
+
+    const response = await fetch(RESULTADOS_URL, {
+
+        method: "POST",
+
+        headers: {
+
+            "Content-Type": "application/json"
+
+        },
+
+        body: JSON.stringify(payload)
+
+    });
+
+    if (!response.ok) {
+
+        throw new Error("No se pudo guardar el resultado del test.");
+
+    }
+
+    return await response.json();
+
+}
+
+//======================================================
+// Escala de niveles según el porcentaje obtenido
+//======================================================
+
+function calcularNivel(porcentaje, invertido) {
+
+    // Test "invertidos" (ej. autoestima): un puntaje alto es algo bueno.
+    // Test normales (ej. ansiedad, estrés): un puntaje alto es riesgo.
+    const escala = invertido
+        ? [
+            { limite: 40, nombre: "Bajo", variant: "danger" },
+            { limite: 70, nombre: "Moderado", variant: "warning" },
+            { limite: 101, nombre: "Alto", variant: "success" }
+        ]
+        : [
+            { limite: 40, nombre: "Bajo", variant: "success" },
+            { limite: 70, nombre: "Moderado", variant: "warning" },
+            { limite: 101, nombre: "Alto", variant: "danger" }
+        ];
+
+    return escala.find(nivel => porcentaje < nivel.limite) ?? escala[escala.length - 1];
+
+}

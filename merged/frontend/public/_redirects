@@ -1,0 +1,3 @@
+# Netlify: redirige cualquier ruta desconocida hacia index.html
+# para que el router del lado del cliente (src/router.js) tome el control.
+/*    /index.html   200
