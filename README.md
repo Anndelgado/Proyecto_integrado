@@ -159,14 +159,14 @@ Available resources (all require a token except `roles`/`instituciones`, and
 `tamizajeHabilitaciones`, `tamizajeResultados`, `citas`, `testResultados`,
 `testAsignaciones`.
 
-##Team
+## Team
 
-Kerlys Bello — Scrum Master
-Yulianis Delgado — Product Owner
-Kevin Villalobos — Backend
-Santiago Otalora — Backend 
-David Carrascal — Frontend
-Camilo Villalobos — Backend
+- Kerlys Bello — Scrum Master
+- Yulianis Delgado — Product Owner
+- Kevin Villalobos — Backend
+- Santiago Otalora — Backend 
+- David Carrascal — Frontend
+- Camilo Villalobos — Backend
 
 # 239-barranquilla-convive
 Academic project repository for Barranquilla Convive (ID: 239)
