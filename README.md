@@ -168,18 +168,6 @@ Santiago Otalora — Backend
 David Carrascal — Frontend
 Camilo Villalobos — Backend
 
+# 239-barranquilla-convive
+Academic project repository for Barranquilla Convive (ID: 239)
 
-
-## Notes
-
-- The production build (`vite build`) uses OS-specific native binaries. If
-  you clone the project on a different OS than the one used to generate
-  `node_modules`, run `npm install` again there instead of copying the
-  `node_modules` folder between machines.
-- CORS is currently wide open (`cors()` with no origin restriction) in
-  `backend/src/server.js` — fine for local development, but it should be
-  locked down to a specific origin before any real deployment.
-- Recommended next steps: token expiration/renewal (there's currently no
-  refresh token, only a fixed expiration), a login attempt limit, mandatory
-  HTTPS in production (the project is currently meant to run locally), and
-  restricting CORS to a known origin.
