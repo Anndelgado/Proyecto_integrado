@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Barranquilla Convive
 
 A school platform for managing and providing early attention to mental
