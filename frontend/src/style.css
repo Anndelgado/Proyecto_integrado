@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+
+  --color-navy-950: #0a1826;
+  --color-navy-900: #0f2438;
+  --color-navy-800: #16344d;
+  --color-navy-700: #1f4763;
+  --color-navy-600: #2c5c7d;
+  --color-navy-500: #3d7396;
+
+  
+  --color-gold-600: #b8862f;
+  --color-gold-500: #d9a53c;
+  --color-gold-400: #e8b84b;
+  --color-gold-300: #f0cb74;
+  --color-gold-100: #faf0d8;
+
+ 
+  --color-alert-red: #e5484d;
+  --color-alert-amber: #f0a83c;
+  --color-alert-green: #2fa876;
+
+  --color-ink: #16344d;
+  --color-paper: #fbfaf7;
+
+  --font-display: "Lato", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Lato", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+select {
+  cursor: pointer;
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"],
+input[type="submit"]:disabled,
+input[type="button"]:disabled {
+  cursor: not-allowed;
+}
+
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-gold-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.dot-grid {
+  background-image: radial-gradient(
+    rgba(232, 184, 75, 0.35) 1.4px,
+    transparent 1.4px
+  );
+  background-size: 22px 22px;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  80%,
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.pulse-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: pulse-ring 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}

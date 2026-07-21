@@ -1,0 +1,18 @@
+{
+  "name": "barranquilla-convive",
+  "version": "2.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "wait-on tcp:5432 --timeout 20000 --interval 500 && concurrently -n API,WEB -c green,magenta \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspace frontend",
+    "preview": "npm run preview --workspace frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "wait-on": "^8.0.1"
+  }
+}
