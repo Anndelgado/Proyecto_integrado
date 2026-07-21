@@ -171,6 +171,3 @@ Available resources (all require a token except `roles`/`instituciones`, and
 # 239-barranquilla-convive
 Academic project repository for Barranquilla Convive (ID: 239)
 
-=======
-# Proyecto Integrado
->>>>>>> ce8bb38ceb1589bea78fa9a77bb6107c005cad73
