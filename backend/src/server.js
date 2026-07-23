@@ -1,5 +1,7 @@
 import "./config.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
 import express from "express";
 import cors from "cors";
 import { pool } from "./db/pool.js";
@@ -9,6 +11,9 @@ import { genericRouter } from "./lib/genericRouter.js";
 import { requireAuth } from "./middleware/auth.js";
 import { authRouter } from "./routes/auth.js";
 import { publicUsersRouter } from "./routes/publicUsers.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const frontendDist = path.join(__dirname, "../../frontend/dist");
 
 const PUBLIC_RESOURCES = new Set(["roles", "instituciones"]);
 
@@ -66,6 +71,21 @@ for (const [key, config] of Object.entries(resources)) {
     app.use(`/api/${key}`, requireAuth, genericRouter(key, config));
 
 }
+
+// Sirve el build de producción del frontend (npm run build) desde el mismo
+// origen que la API, para que las rutas relativas "/api/*" del frontend
+// sigan funcionando sin configurar CORS ni un dominio aparte.
+app.use(express.static(frontendDist));
+
+app.get(/^\/(?!api).*/, (req, res, next) => {
+
+    res.sendFile(path.join(frontendDist, "index.html"), (error) => {
+
+        if (error) next();
+
+    });
+
+});
 
 app.use((req, res) => {
 
