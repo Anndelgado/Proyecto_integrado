@@ -56,7 +56,7 @@ function hero() {
     <div class="relative flex justify-center">
 
       <img
-        src="/src/assets/estudiantes.png"
+        src="/estudiantes.png"
         alt="Estudiantes"
         class="w-full max-w-xl"
       />
@@ -107,7 +107,7 @@ Más sobre el proyecto
 <div>
 
 <img
-src="/src/assets/barranquilla.jpeg"
+src="/barranquilla.jpeg"
 class="w-full"
 alt="Barranquilla"
 />
@@ -261,37 +261,37 @@ function equipo() {
 const people = [
 
 {
-img:"/src/assets/userpg.png",
+img:"/userpg.png",
 name:"Kerlys Bello",
 role:"Scrum Master"
 },
 
 {
-img:"/src/assets/userpg.png",
+img:"/userpg.png",
 name:"Kevin Villalobos",
 role:"Desarrollador Backend"
 },
 
 {
-img:"/src/assets/userpg.png",
+img:"/userpg.png",
 name:"Yulianis Delgado",
 role:"Product Owner"
 },
 
 {
-img:"/src/assets/userpg.png",
+img:"/userpg.png",
 name:"David Carrascal ",
 role:"Desarrollador Front End"
 },
 
 {
-img:"/src/assets/userpg.png",
+img:"/userpg.png",
 name:"Santiago Otalora",
 role:"Desarrollador Backend"
 },
 
 {
-img:"/src/assets/userpg.png",
+img:"/userpg.png",
 name:"Camilo Villalobos",
 role:"Tester"
 }
